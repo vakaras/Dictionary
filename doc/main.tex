@@ -1,0 +1,43 @@
+\documentclass{report}
+
+\usepackage{fontspec}
+\usepackage[lithuanian]{babel}
+\usepackage{indentfirst}
+\usepackage[]{hyperref}
+
+% The following is needed in order to make the code compatible
+% with both latex/dvips and pdflatex.
+\ifx\pdftexversion\undefined
+\usepackage[dvips]{graphicx}
+\else
+\usepackage[pdftex]{graphicx}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\fi
+
+\hypersetup{pdfborder={0 0 0 0}}
+
+\defaultfontfeatures{Mapping=tex-text}
+
+\title{%
+Programa „Žodynas“}
+
+\author{%
+Vytautas Astrauskas \and Egidijus Lukauskas\\
+Vilniaus universitetas, Matematikos ir Informatikos fakultetas
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\bigskip
+
+\begin{itemize}
+  \item Kažkas 1
+  \item Kažkas 2
+\end{itemize}
+
+\section{UML schema}
+\includegraphics{uml.1}
+
+\end{document}

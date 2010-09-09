@@ -17,3 +17,12 @@ Pastabos
   anglų kalba.
 + Programos komentarai rašomi anglų kalba.
 + GIT komentarai rašomi anglų kalba.
++ Ignoruojami failų plėtiniai:
+
+  + `*.pdf`
+  + `*.aux`
+  + `*.log`
+  + `*.out`
+  + `*.xdv`
+
+
