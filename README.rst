@@ -10,6 +10,20 @@ Autoriai:
 + Vytautas Astrauskas
 + Egidijus Lukauskas
 
+Pasiskirstymas
+==============
+
+Vytautas Astrauskas:
+
++ DBUS
++ WordLists
+
+Egidijus Lukauskas:
+
++ Config
++ Factories
++ GUI
+
 Pastabos
 ========
 
@@ -24,5 +38,5 @@ Pastabos
   + `*.log`
   + `*.out`
   + `*.xdv`
-
+  + `*.class`
 
