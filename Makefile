@@ -1,3 +1,7 @@
+# Sukompiliuoti programą.
+.PHONY: src
+src:
+	$(MAKE) -C src
 
 # Sugeneruoti dokumentaciją.
 .PHONY: doc
@@ -13,3 +17,5 @@ clean:
 .PHONY: clear
 clear: clean
 	$(MAKE) -C doc clear
+
+
