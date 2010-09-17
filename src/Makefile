@@ -6,7 +6,7 @@ run: Dict.class
 	java Dict
 
 Dict.class:
-	javac Dict.java wordlists/WordListFactory.java
+	javac Dict.java wordlists/*.java
 
 clean:
 	rm -f *.class */*.class
