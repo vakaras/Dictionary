@@ -2,7 +2,7 @@
  * Interface definining word list, which before using must be loaded from
  * file.
  */
-public interface IWordListRead {
+public interface IWordListFileRead {
 
   /**
    * Load word list from file.

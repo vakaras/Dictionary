@@ -1,7 +1,7 @@
 /**
  * Interface defining word list, which could be written to file.
  */
-public interface IWordListWrite {
+public interface IWordListFileWrite {
 
   /**
    * Save word list to file.
