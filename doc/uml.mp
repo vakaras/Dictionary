@@ -20,7 +20,7 @@ beginfig(1);
       ("+load(filename: String): void");
 
   Interface.IWLC("IWordListChange")
-      ("+addWord(word: String, definition: String): void",
+      ("+addWord(word: String, definition: String): String",
       "+updateWord(word: String, definition: String): String",
       "+eraseWord(word: String): String");
 
@@ -72,7 +72,8 @@ beginfig(1);
       "+searchSmart(word: String): Map<String, String>",
       "+updateWord(identifier:String,word:String, definition:String):void",
       "+eraseWord(identifier: String, word: String): String",
-      "+addWord(identifier:String, word:String, definition: String):void");
+      "+addWord(identifier:String, word:String, definition: String):String"
+      );
 
   Interface.IS("IService")
       ("+start(): void",
