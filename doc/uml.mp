@@ -11,7 +11,7 @@ beginfig(1);
   % TODO: Add words learning helper.
 
   Interface.IWL("IWordList")
-      ("+Search(word: String): String");
+      ("+search(word: String): String");
 
   Interface.IWLW("IWordListFileWrite")
       ("+save(filename: String): void");
