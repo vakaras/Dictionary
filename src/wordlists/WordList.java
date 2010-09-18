@@ -1,3 +1,5 @@
+package wordlists;
+
 /**
  * Abstract class inmplementing the most generic word list.
  */

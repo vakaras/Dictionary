@@ -1,3 +1,5 @@
+package wordlists;
+
 /**
  * Interface defining the most generic word list.
  */

@@ -1,3 +1,5 @@
+package wordlists;
+
 /**
  * Interface defining word list, which could be written to file.
  */

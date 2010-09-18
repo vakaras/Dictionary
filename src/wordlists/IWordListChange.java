@@ -1,3 +1,5 @@
+package wordlists;
+
 /**
  * Interface defining word list, which can be changed.
  */

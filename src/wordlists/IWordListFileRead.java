@@ -1,3 +1,5 @@
+package wordlists;
+
 /**
  * Interface definining word list, which before using must be loaded from
  * file.
