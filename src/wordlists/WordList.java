@@ -3,6 +3,6 @@
  */
 public abstract class WordList implements IWordList {
 
-  public abstract String search(String word);
+  public abstract String search(String word) throws Exception;
 
   }

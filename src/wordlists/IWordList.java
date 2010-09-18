@@ -8,7 +8,7 @@ public interface IWordList {
    * @param word – searched word part.
    * @return word definition.
    */
-  String search(String word);
+  String search(String word) throws Exception;
 
   }
 
