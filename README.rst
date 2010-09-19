@@ -40,3 +40,8 @@ Pastabos
   + `*.xdv`
   + `*.class`
 
+Reikalavimai
+============
+
+.. code-block:: sh
+  sudo apt-get install junit junit-doc

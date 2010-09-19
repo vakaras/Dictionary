@@ -15,10 +15,25 @@ class Dict {
   public static void main(String[] services) {
     System.out.println("Program starting.");
 
-    wordlists.WordListFactory w = new wordlists.WordListFactory();
-    ServiceFactory s = new ServiceFactory();
+    System.out.println("Arguments (" + services.length + "):");
+    for (String i: services) {
+      System.out.println(i);
+      }
+
+    if (services.length == 1 && services[0].equals("test")) {
+      System.out.println("Runing unit tests.");
+      test();
+      }
+    else {
+      wordlists.WordListFactory w = new wordlists.WordListFactory();
+      ServiceFactory s = new ServiceFactory();
+      }
 
     System.out.println("Program closed.");
+    }
+
+  public static void test() {
+    junit.textui.TestRunner.run(tests.TestDWAFile.class);
     }
 
   }
