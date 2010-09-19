@@ -1,5 +1,9 @@
 package wordlists;
 
+import java.util.LinkedList;
+
+import utils.Word;
+
 /**
  * Interface defining the most generic word list.
  */
@@ -10,7 +14,7 @@ public interface IWordList {
    * @param word – searched word part.
    * @return word definition.
    */
-  String search(String word) throws Exception;
+  LinkedList<Word> search(String word, int count) throws Exception;
 
   }
 
