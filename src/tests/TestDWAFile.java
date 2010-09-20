@@ -33,23 +33,56 @@ public class TestDWAFile extends TestCase {
     super.assertEquals(result.size(), 4);
 
     Word i = result.get(0);
-    super.assertEquals(i.getWord(), "aaaa");
-    super.assertEquals(i.getDescription(), "Description 1.");
+    super.assertEquals("aaaa", i.getWord());
+    super.assertEquals("Description 1.", i.getDescription());
 
     i = result.get(1);
-    super.assertEquals(i.getWord(), "aaab");
-    super.assertEquals(i.getDescription(), "Description 2.");
+    super.assertEquals("aaab", i.getWord());
+    super.assertEquals("Description 2.", i.getDescription());
 
     i = result.get(2);
-    super.assertEquals(i.getWord(), "aaac");
-    super.assertEquals(i.getDescription(), 
-        "Description 3. Same key as in 4.");
+    super.assertEquals("aaac", i.getWord());
+    super.assertEquals("Description 3. Same key as in 4.", 
+        i.getDescription());
 
     i = result.get(3);
-    super.assertEquals(i.getWord(), "aaac");
-    super.assertEquals(i.getDescription(), 
-        "Description 4. Same key as in 3.");
+    super.assertEquals("aaac", i.getWord());
+    super.assertEquals("Description 4. Same key as in 3.",
+        i.getDescription());
 
+    }
+  
+  public void testUnicodeSearch() throws Exception {
+
+    wordList.load("tests/test.dwa");
+
+    LinkedList<Word> result = wordList.search("ąa", 5);
+
+    super.assertEquals(result.size(), 4);
+
+    Word i = result.get(0);
+    super.assertEquals("ąabf", i.getWord());
+    super.assertEquals(
+        "Description 8.  Testing unicode characters and collation.",
+        i.getDescription());
+
+    i = result.get(1);
+    super.assertEquals("ąabg", i.getWord());
+    super.assertEquals(
+        "Description 9.  Testing unicode characters and collation.",
+        i.getDescription());
+
+    i = result.get(2);
+    super.assertEquals("ąabh", i.getWord());
+    super.assertEquals(
+        "Description 10. Testing unicode characters and collation.",
+        i.getDescription());
+
+    i = result.get(3);
+    super.assertEquals("ąačc", i.getWord());
+    super.assertEquals(
+        "Description 11. Testing unicode characters and collation.",
+        i.getDescription());
     }
   
   }
