@@ -15,7 +15,7 @@ import utils.Word;
  */
 public class DWAFile extends WordList implements IWordListFileRead {
 
-  private String filename = "";
+  private String filename = null;
 
   public LinkedList<Word> search(String word, int count) 
     throws Exception {
@@ -26,7 +26,6 @@ public class DWAFile extends WordList implements IWordListFileRead {
         new InputStreamReader(
           new FileInputStream(filename), "UTF8"));
 
-    System.out.println("----");
     while (true) {
       String str = in.readLine();
       if (str == null)
