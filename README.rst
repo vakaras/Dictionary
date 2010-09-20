@@ -40,6 +40,8 @@ Pastabos
   + `*.xdv`
   + `*.class`
 
++ Testai turi patys susitvarkyti savo šiukšles.
+
 Reikalavimai
 ============
 
