@@ -10,6 +10,6 @@ public interface IWordListFileRead {
    * Load word list from file.
    * @param filename – path to file, from which to load word list.
    */
-  void load(String filename);
+  void load(String filename) throws Exception;
 
   }
