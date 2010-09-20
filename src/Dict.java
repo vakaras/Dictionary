@@ -34,6 +34,7 @@ class Dict {
 
   public static void test() {
     junit.textui.TestRunner.run(tests.TestDWAFile.class);
+    junit.textui.TestRunner.run(tests.TestDWAMemory.class);
     }
 
   }
