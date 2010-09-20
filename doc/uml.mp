@@ -20,9 +20,10 @@ beginfig(1);
       ("+load(filename: String): void");
 
   Interface.IWLC("IWordListChange")
-      ("+addWord(word: String, definition: String): String",
-      "+updateWord(word: String, definition: String): String",
-      "+eraseWord(word: String): String");
+      ("+addWord(word: String, definition: String): void",
+      "+updateWord(word: String, definition: String): void",
+      "+eraseWord(word: String): void",
+      "+getWordDefinition(word: String): String");
 
   AbstractClass.WL("WordList")
       ()
