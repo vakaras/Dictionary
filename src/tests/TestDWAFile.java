@@ -73,7 +73,7 @@ public class TestDWAFile extends TestCase {
         i.getDescription());
 
     i = result.get(2);
-    super.assertEquals("ąabh", i.getWord());
+    super.assertEquals("ąabi", i.getWord());
     super.assertEquals(
         "Description 10. Testing unicode characters and collation.",
         i.getDescription());
