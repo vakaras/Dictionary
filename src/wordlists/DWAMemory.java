@@ -18,10 +18,9 @@ import utils.Word;
  * memory.)
  */
 public class DWAMemory extends WordList implements 
- IWordListChange, IWordListFileWrite, 
-  IWordListFileRead 
-{
+  IWordListChange, IWordListFileWrite, IWordListFileRead {
   // FIXME: Exceptions types.
+  // FIXME: Make synchronized!!!
 
   private String filename = null;
   private LinkedList<Word> data = null;
