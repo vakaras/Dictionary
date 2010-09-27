@@ -6,7 +6,7 @@ import java.lang.Integer;
 import java.util.TreeMap;
 import java.util.Set;
 import java.util.Iterator;
-//import java.util.LinkedList;
+import java.util.LinkedList;
 //import java.util.ListIterator;
 //import java.text.Collator;
 
@@ -25,7 +25,7 @@ import utils.Word;
 class Node {
 
   private String description = null;
-  private TreeMap<String, Node> next = new TreeMap<String, Node>();
+  private TreeMap<Character, Node> next = new TreeMap<Character, Node>();
   private Integer address = null;
 
   /**
@@ -34,41 +34,17 @@ class Node {
    * @param symbol – node indentifier.
    * @return Node specified by symbol.
    */
-  public Node getNextNode(char symbol) throws Exception {
-    String tmp = new String(new char[] {symbol});
-    return this.getNextNode(tmp);
-    }
-  
-  /** 
-   * Returns Node, which is represented by given symbol. If node doesn't
-   * exists throws an exception.
-   * @param symbol – string, node indentifier, which length is 1.
-   * @return Node specified by symbol.
-   */
-  private Node getNextNode(String symbol) throws Exception {
-    assert symbol.length() == 1;
+  public Node getNextNode(Character symbol) throws Exception {
     throw new Exception("Not implemented!");
     }
-
+  
   /** 
    * Returns Node, which is represented by given symbol. If node doesn't
    * exists, then creates it.
    * @param symbol – node indentifier.
    * @return Node specified by symbol.
    */
-  public Node getCreateNextNode(char symbol) throws Exception {
-    String tmp = new String(new char[] {symbol});
-    return this.getCreateNextNode(tmp);
-    }
-
-  /** 
-   * Returns Node, which is represented by given symbol. If node doesn't
-   * exists, then creates it.
-   * @param symbol – String, node indentifier, which length is 1.
-   * @return Node specified by symbol.
-   */
-  private Node getCreateNextNode(String symbol) throws Exception {
-    assert symbol.length() == 1;
+  public Node getCreateNextNode(Character symbol) throws Exception {
     throw new Exception("Not implemented!");
     }
 
@@ -87,15 +63,13 @@ class Node {
     return this.description != null;
     }
 
-  public char[] getLettersList() {
-    Set<String> stringKeys = this.next.keySet();
+  public LinkedList<Character> getLettersList() {
 
-    char[] keys = new char[stringKeys.size()];
+    Set<Character> keySet = this.next.keySet();
+    LinkedList<Character> keys = new LinkedList<Character>();
 
-    int i = 0;
-    for (String key : stringKeys) {
-      keys[i] = key.charAt(0);
-      }
+    for (Character key : keySet)
+      keys.add(key);
 
     return keys;
     }
@@ -108,7 +82,7 @@ class Node {
     return this.address;
     }
   
-  public setAddress(Intger address) {
+  public void setAddress(Integer address) {
     this.address = address;
     }
   
