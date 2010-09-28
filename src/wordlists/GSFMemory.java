@@ -11,29 +11,33 @@ import java.text.Collator;
 //import java.util.ListIterator;
 
 import java.io.RandomAccessFile;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 //import java.io.DataOutputStream;
 //import java.io.BufferedOutputStream;
 //import java.io.FileOutputStream;
-//import java.io.BufferedReader;
-//import java.io.FileInputStream;
-//import java.io.InputStreamReader;
 //import java.io.BufferedWriter;
 //import java.io.FileOutputStream;
 //import java.io.OutputStreamWriter;
 
 import utils.Word;
+import utils.CharacterCollator;
 
 /**
  * Internal class representing single trie node.
  */
 class Node {
 
-  private String description = null;
+  private String definition = null;
   private TreeMap<Character, Node> next = null;
   private Integer address = null;
 
+  @SuppressWarnings("unchecked")
   public Node () {
-    Collator collator = Collator.getInstance();
+    CharacterCollator collator = CharacterCollator.getInstance();
+                                        // FIXME: Find the reason of warning
+                                        // and remove suppress.
                                         // FIXME: Collator must be WordList
                                         // dependent, not program dependent.
     next = new TreeMap<Character, Node>(collator);
@@ -67,19 +71,19 @@ class Node {
     return this.next.get(symbol);
     }
 
-  public String getDescription() {
-    return this.description;
+  public String getDefinition() {
+    return this.definition;
     }
   
-  public void setDescription(String description) {
-    this.description = description;
+  public void setDefinition(String definition) {
+    this.definition = definition;
     }
   
   /**
    * Returns true, if exists word, which ends here.
    */
   public boolean isWord() {
-    return this.description != null;
+    return this.definition != null;
     }
 
   public LinkedList<Character> getLettersList() {
@@ -130,14 +134,18 @@ public class GSFMemory //extends WordList implements
                                         // of byte which is going to be 
                                         // written. Not which was written.
     
+    System.out.print("Node " + (node.isWord()?"word ":""));
+    System.out.println("("+node.getAddress()+"):");
     for (Character l : node.getLettersList()) {
       out.writeChar(l.charValue());
       out.writeInt(node.getNextNode(l).getAddress());
+      System.out.print("  "+l.toString()+": ");
+      System.out.println(node.getNextNode(l).getAddress());
       }
     
     if (node.isWord()) {
       out.writeChar(1);
-      out.writeUTF(node.getDescription());
+      out.writeUTF(node.getDefinition());
       }
     else {
       out.writeChar(0);
@@ -154,10 +162,15 @@ public class GSFMemory //extends WordList implements
       //out = new DataOutputStream(
       //    new BufferedOutputStream(new FileOutputStream(filename)));
 
+      System.out.println("Writing GSF to file: " + filename);
+
       out.writeBytes("GSF");
       out.writeInt(0);                  // Placeholder for root node 
                                         // address.
       this.write(this.root, out);       // Dump all nodes.
+      out.seek(3);
+      out.writeInt(this.root.getAddress());
+      System.out.println("Root node address: " + this.root.getAddress());
       }
     finally {
       if (out != null)
@@ -165,6 +178,177 @@ public class GSFMemory //extends WordList implements
       }
     
     this.filename = filename;
+
+    return;
+    }
+
+  public void addWord(String word, String definition) throws Exception {
+
+    Node node = this.root;
+
+    for (char c : word.toCharArray()) {
+      Character letter = new Character(c);
+      node = node.getCreateNextNode(letter);
+      }
+
+    if (node.isWord()) {
+      throw new Exception("Word " + word + " already exists!");
+      }
+    else {
+      node.setDefinition(definition);
+      }
+    
+    return;
+    }
+
+  public void updateWord(String word, String definition) throws Exception {
+
+    Node node = this.root;
+
+    for (char c : word.toCharArray()) {
+      Character letter = new Character(c);
+      node = node.getNextNode(letter);  // FIXME: Make normal exceptions.
+      }
+    
+    if (node.isWord()) {
+      node.setDefinition(definition);
+      }
+    else {
+      throw new Exception("Word not found!");
+      }
+
+    return;
+    }
+
+  public void eraseWord(String word) throws Exception {
+
+    Node node = this.root;
+
+    for (char c : word.toCharArray()) {
+      Character letter = new Character(c);
+      node = node.getNextNode(letter);  // FIXME: Make normal exceptions.
+      }
+    
+    if (node.isWord()) {
+      node.setDefinition(null);         // FIXME: Make normal node erase.
+      }
+    else {
+      throw new Exception("Word not found!");
+      }
+
+    return;
+    }
+
+  public String getWordDefinition(String word) throws Exception {
+
+    Node node = this.root;
+
+    for (char c : word.toCharArray()) {
+      Character letter = new Character(c);
+      node = node.getNextNode(letter);  // FIXME: Make normal exceptions.
+      }
+    
+    if (!node.isWord()) {
+      throw new Exception("Word not found!");
+      }
+
+    return node.getDefinition();
+    }
+
+  public void load(String filename) throws Exception {
+
+    this.filename = filename;
+
+    if (this.filename.endsWith(".dwa")) {
+      this.loadDWA();
+      }
+    else if (this.filename.endsWith(".gsf")) {
+      this.loadGSF();
+      }
+    else {
+      throw new Exception("Unknown file type!");
+      }
+    
+    return;
+    }
+
+  private void loadGSF() throws Exception {
+
+    RandomAccessFile in = null;
+
+    try {
+      in = new RandomAccessFile(this.filename, "r");
+
+      this.root = new Node();
+
+      in.seek(3);                       // Skip "GSF".
+      Integer rootAddress = new Integer(in.readInt());
+
+      TreeMap<Integer, Node> nodes = new TreeMap<Integer, Node>();
+
+      while (true) {
+        node = new Node();
+
+        // TODO: Read node.
+        }
+      
+      // TODO: Indexing.
+      }
+    finally {
+      if (in != null)
+        in.close();
+      }
+    
+    return;
+    }
+
+  private void loadDWA() throws Exception {
+
+    BufferedReader in = null; 
+
+    try {
+      in = new BufferedReader( 
+          new InputStreamReader( 
+            new FileInputStream(this.filename), "UTF8"));
+
+      this.root = new Node();
+
+      while (true) {
+        String str = in.readLine();
+        if (str == null)
+          break;
+        int splitPoint = str.indexOf('=');
+        String word = str.substring(0, splitPoint);
+        String description = str.substring(splitPoint+1);
+        while (true) {
+          try {
+            this.addWord(word, description);  
+            break;
+            }
+          catch (Exception e) {
+            if (word.length() > 2 && word.charAt(word.length()-2) == ' ' &&
+                  Character.isDigit(word.charAt(word.length()-1))) {
+              char digit = word.charAt(word.length()-1);
+              String number = new String(new char[] {digit});
+              number = (new Integer(Integer.parseInt(number)+1)
+                  ).toString();
+              word = word.substring(0, word.length()-1) + number;
+              }
+            else {
+              word = word + " 1";
+              }
+            }
+          }
+
+        }
+
+      }
+    finally {
+      if (in != null)
+        in.close();
+      }
+    
+    return;
     }
 
   }

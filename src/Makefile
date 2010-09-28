@@ -11,9 +11,11 @@ run: Dict.class
 	java Dict
 
 Dict.class:
-	javac -g \
+	javac -g -Xlint \
 		Dict.java \
-		wordlists/*.java
+		wordlists/*.java \
+		utils/*.java \
+		tests/*.java
 
 clean:
 	rm -f *.class */*.class
