@@ -39,6 +39,7 @@ Pastabos
   + `*.out`
   + `*.xdv`
   + `*.class`
+  + `*.gsf`
 
 + Testai turi patys susitvarkyti savo šiukšles.
 
