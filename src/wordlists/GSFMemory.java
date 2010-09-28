@@ -125,9 +125,8 @@ class Node {
  * Class implementing word list working with GSF files. (Loads them into
  * memory.)
  */
-public class GSFMemory //extends WordList implements
-//  IWordListChange, IWordListFileWrite, IWordListFileRead 
-{
+public class GSFMemory extends WordList implements 
+    IWordListChange, IWordListFileWrite, IWordListFileRead {
 
   // FIXME: Make synchronized!!!
 
@@ -241,6 +240,87 @@ public class GSFMemory //extends WordList implements
     this.filename = filename;
 
     return;
+    }
+
+  /**
+   * Recursively search for a word.
+   * @param node – node, which is now being processed.
+   * @param request – word to search for.
+   * @param index – index of letter, which is being processed.
+   * @param left – how many descriptions left to find.
+   * @param result – list, to which result will be added.
+   * @param word – word which was found.
+   * @return how many words were added to result.
+   */
+  private int search(Node node, String request, int index, int left, 
+      LinkedList<Word> result, String word) throws Exception {
+    // TODO: Cleanup this function code!
+
+    int added = 0;
+
+    //System.out.print("Node (word: "+node.isWord()+"): "+word);
+    //System.out.println(" index: "+index+" left: "+left);
+
+    if (request.length() > index) {
+      Character letter = new Character(request.charAt(index));
+
+      //System.out.println("  Letter: " + letter.toString());
+      
+      CharacterCollator collator = CharacterCollator.getInstance();
+
+      for (Character l : node.getLettersList()) {
+        if (collator.compare(letter, l) == 0) {
+          int addedNow = this.search(node.getNextNode(l), request, index+1, 
+              left, result, word+l.toString());
+          added += addedNow;
+          left -= addedNow;
+          if (left <= 0) {
+            return added;
+            }
+          }
+        if (collator.compare(letter, l) < 0) {
+          int addedNow = this.search(node.getNextNode(l), "", index+1, 
+              left, result, word+l.toString());
+          added += addedNow;
+          left -= addedNow;
+          if (left <= 0) {
+            return added;
+            }
+          }
+        }
+      
+      }
+    else {
+      if (node.isWord()) {
+        result.add(new Word(word, node.getDefinition()));
+        added++;
+        left--;
+        if (left <= 0) {
+          return added;
+          }
+        }
+      for (Character l : node.getLettersList()) {
+          int addedNow = this.search(node.getNextNode(l), request, index+1, 
+              left, result, word+l.toString());
+          added += addedNow;
+          left -= addedNow;
+          if (left <= 0) {
+            return added;
+            }
+        }
+      }
+
+    return added;
+    }
+
+  public LinkedList<Word> search(String word, int count) throws Exception {
+
+    LinkedList<Word> result = new LinkedList<Word>();
+
+    //System.out.println("Request: " + word);
+    search(this.root, word, 0, count, result, "");
+
+    return result;
     }
 
   public void addWord(String word, String definition) throws Exception {
