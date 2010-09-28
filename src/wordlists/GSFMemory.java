@@ -71,6 +71,17 @@ class Node {
     return this.next.get(symbol);
     }
 
+  public void assignNextNode(Character symbol, Node node) throws Exception {
+
+    if (this.next.containsKey(symbol)) {
+      throw new Exception("Node already assigned!");
+      }
+
+    this.next.put(symbol, node);
+
+    return;
+    }
+
   public String getDefinition() {
     return this.definition;
     }
@@ -286,13 +297,38 @@ public class GSFMemory //extends WordList implements
 
       TreeMap<Integer, Node> nodes = new TreeMap<Integer, Node>();
 
-      while (true) {
-        node = new Node();
+      try {
+        while (true) {
+          Node node = new Node();
 
-        // TODO: Read node.
+          node.setAddress(new Integer((int) in.getFilePointer()));
+
+          while (true) {
+            char l = in.readChar();
+            if (((int) l) == 0) {
+              break;
+              }
+            else if (((int) l) == 1) {
+              String definition = in.readUTF();
+              node.setDefinition(definition);
+              break;
+              }
+            Integer address = new Integer(in.readInt());
+            if (!nodes.containsKey(address)) {
+              throw new Exception("Node is missing!");
+              }
+            node.assignNextNode(new Character(l), nodes.get(address));
+            }
+          if (nodes.containsKey(node.getAddress())) {
+            throw new Exception("Node already read!");
+            }
+          nodes.put(node.getAddress(), node);
+          }
         }
-      
-      // TODO: Indexing.
+      catch (java.io.EOFException e) {
+        }
+
+      this.root = nodes.get(rootAddress);
       }
     finally {
       if (in != null)
