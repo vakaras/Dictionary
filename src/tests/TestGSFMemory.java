@@ -91,22 +91,36 @@ public class TestGSFMemory extends TestCase {
 
   public void testSave() throws Exception {
 
+    // TODO: Test case, when one word is prefix of other. With Unicode too.
+    
     wordList.load("tests/test.dwa");
-
     wordList.save("tests/test.gsf");
 
-//  // Check if files content is not different.
-//  Process diff = Runtime.getRuntime().exec(
-//      new String[] {"diff", "tests/test.dwa", "tests/test.dwa.new"});
+    wordlists.GSFMemory wordListTemp = new wordlists.GSFMemory();
+    wordListTemp.load("tests/test.gsf");
+    wordListTemp.save("tests/test.new.dwa");
 
-//  BufferedReader out = new BufferedReader( 
-//      new InputStreamReader(diff.getInputStream()));
+    // Check if files content is not different.
+    Process diff = Runtime.getRuntime().exec(
+        new String[] {"diff", "tests/test.dwa", "tests/test.new.dwa"});
 
-//  super.assertEquals(null, out.readLine());
+    BufferedReader out = new BufferedReader( 
+        new InputStreamReader(diff.getInputStream()));
 
-//  // Delete file.
-//  File f = new File("tests/test.dwa.new");
-//  super.assertTrue(f.delete());
+    super.assertEquals("4c4", out.readLine());
+    super.assertEquals("< aaac=Description 4. Same key as in 3.", 
+        out.readLine());
+    super.assertEquals("---", out.readLine());
+    super.assertEquals("> aaac 1=Description 4. Same key as in 3.", 
+        out.readLine());
+    super.assertEquals(null, out.readLine());
+
+    // Delete file.
+    File f = new File("tests/test.new.dwa");
+    super.assertTrue(f.delete());
+
+    f = new File("tests/test.gsf");
+    super.assertTrue(f.delete());
     }
   
   }

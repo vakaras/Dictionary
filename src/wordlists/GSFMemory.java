@@ -14,12 +14,11 @@ import java.io.RandomAccessFile;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 //import java.io.DataOutputStream;
 //import java.io.BufferedOutputStream;
-//import java.io.FileOutputStream;
-//import java.io.BufferedWriter;
-//import java.io.FileOutputStream;
-//import java.io.OutputStreamWriter;
 
 import utils.Word;
 import utils.CharacterCollator;
@@ -135,23 +134,23 @@ public class GSFMemory //extends WordList implements
   private Node root = new Node();
   private String filename = null;
 
-  private void write(Node node, RandomAccessFile out) throws Exception {
+  private void writeGSF(Node node, RandomAccessFile out) throws Exception {
 
     for (Character l : node.getLettersList())
-      this.write(node.getNextNode(l), out);
+      this.writeGSF(node.getNextNode(l), out);
 
     node.setAddress(new Integer((int) out.getFilePointer()));
                                         // TODO: Check if returned offset is
                                         // of byte which is going to be 
                                         // written. Not which was written.
     
-    System.out.print("Node " + (node.isWord()?"word ":""));
-    System.out.println("("+node.getAddress()+"):");
+    //System.out.print("Node " + (node.isWord()?"word ":""));
+    //System.out.println("("+node.getAddress()+"):");
     for (Character l : node.getLettersList()) {
       out.writeChar(l.charValue());
       out.writeInt(node.getNextNode(l).getAddress());
-      System.out.print("  "+l.toString()+": ");
-      System.out.println(node.getNextNode(l).getAddress());
+      //System.out.print("  "+l.toString()+": ");
+      //System.out.println(node.getNextNode(l).getAddress());
       }
     
     if (node.isWord()) {
@@ -162,26 +161,77 @@ public class GSFMemory //extends WordList implements
       out.writeChar(0);
       }
 
+    return;
+    }
+
+  private void writeDWA(Node node, BufferedWriter out, 
+      String word) throws Exception {
+
+    if (node.isWord()) {
+      out.write(word+"="+node.getDefinition());
+      out.newLine();
+      }
+    
+    for (Character l : node.getLettersList()) {
+      this.writeDWA(node.getNextNode(l), out, word+l.toString());
+      }
+
+    return;
     }
 
   public void save(String filename) throws Exception {
-    //DataOutputStream out = null;
+
+    if (filename.endsWith(".dwa")) {
+      this.saveDWA(filename);
+      }
+    else if (filename.endsWith(".gsf")) {
+      this.saveGSF(filename);
+      }
+    else {
+      throw new Exception("Unknown file type!");
+      }
+    
+    return;
+    }
+
+  private void saveDWA(String filename) throws Exception {
+
+    BufferedWriter out = null;
+
+    try {
+
+      out = new BufferedWriter( 
+          new OutputStreamWriter( 
+            new FileOutputStream(filename),"UTF8"));
+      
+      this.writeDWA(this.root, out, "");
+
+      }
+    finally {
+      if (out != null)
+        out.close();
+      }
+
+    this.filename = filename;
+
+    return;
+    }
+
+  private void saveGSF(String filename) throws Exception {
     RandomAccessFile out = null;
 
     try {
       out = new RandomAccessFile(filename, "rw");
-      //out = new DataOutputStream(
-      //    new BufferedOutputStream(new FileOutputStream(filename)));
 
-      System.out.println("Writing GSF to file: " + filename);
+      //System.out.println("Writing GSF to file: " + filename);
 
       out.writeBytes("GSF");
       out.writeInt(0);                  // Placeholder for root node 
                                         // address.
-      this.write(this.root, out);       // Dump all nodes.
+      this.writeGSF(this.root, out);    // Dump all nodes.
       out.seek(3);
       out.writeInt(this.root.getAddress());
-      System.out.println("Root node address: " + this.root.getAddress());
+      //System.out.println("Root node address: " + this.root.getAddress());
       }
     finally {
       if (out != null)
