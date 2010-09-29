@@ -34,8 +34,6 @@ class Node {
 
   public Node () {
     CharacterCollator collator = CharacterCollator.getInstance();
-                                        // FIXME: Find the reason of warning
-                                        // and remove suppress.
                                         // FIXME: Collator must be WordList
                                         // dependent, not program dependent.
     next = new TreeMap<Character, Node>(collator);
@@ -246,7 +244,7 @@ public class GSFMemory extends WordList implements
    * @param node – node, which is now being processed.
    * @param request – word to search for.
    * @param index – index of letter, which is being processed.
-   * @param left – how many descriptions left to find.
+   * @param left – how many definitions left to find.
    * @param result – list, to which result will be added.
    * @param word – word which was found.
    * @return how many words were added to result.
@@ -484,10 +482,10 @@ public class GSFMemory extends WordList implements
           break;
         int splitPoint = str.indexOf('=');
         String word = str.substring(0, splitPoint);
-        String description = str.substring(splitPoint+1);
+        String definition = str.substring(splitPoint+1);
         while (true) {
           try {
-            this.addWord(word, description);  
+            this.addWord(word, definition);  
             break;
             }
           catch (Exception e) {
