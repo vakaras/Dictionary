@@ -7,7 +7,7 @@ import java.util.Comparator;
 /**
  * Class implementing Character collator.
  */
-public class CharacterCollator implements Comparator {
+public class CharacterCollator implements Comparator<Object> {
 
   private static CharacterCollator characterCollator = null;
   private Collator stringCollator = null;

@@ -32,7 +32,6 @@ class Node {
   private TreeMap<Character, Node> next = null;
   private Integer address = null;
 
-  @SuppressWarnings("unchecked")
   public Node () {
     CharacterCollator collator = CharacterCollator.getInstance();
                                         // FIXME: Find the reason of warning
