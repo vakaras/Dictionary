@@ -34,8 +34,6 @@ class FileNode {
     this.address = address;
     this.file = in;
 
-    System.out.print("seek: " + address + "\t");
-
     in.seek(address);
     
     while (true) {
@@ -132,9 +130,6 @@ public class GSFFile extends WordList implements IWordListFileRead {
       LinkedList<Word> result) throws Exception {
 
     int added = 0;
-
-    System.out.print("Node: " + node.getWord());
-    System.out.println(" adr: " + node.getAddress());
 
     if (request.length() > index) {
       Character letter = new Character(request.charAt(index));

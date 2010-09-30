@@ -140,13 +140,9 @@ public class GSFMemory extends WordList implements
                                         // of byte which is going to be 
                                         // written. Not which was written.
     
-    //System.out.print("Node " + (node.isWord()?"word ":""));
-    //System.out.println("("+node.getAddress()+"):");
     for (Character l : node.getLettersList()) {
       out.writeChar(l.charValue());
       out.writeInt(node.getNextNode(l).getAddress());
-      //System.out.print("  "+l.toString()+": ");
-      //System.out.println(node.getNextNode(l).getAddress());
       }
     
     if (node.isWord()) {
@@ -219,15 +215,12 @@ public class GSFMemory extends WordList implements
     try {
       out = new RandomAccessFile(filename, "rw");
 
-      //System.out.println("Writing GSF to file: " + filename);
-
       out.writeBytes("GSF");
       out.writeInt(0);                  // Placeholder for root node 
                                         // address.
       this.writeGSF(this.root, out);    // Dump all nodes.
       out.seek(3);
       out.writeInt(this.root.getAddress());
-      //System.out.println("Root node address: " + this.root.getAddress());
       }
     finally {
       if (out != null)
@@ -255,15 +248,9 @@ public class GSFMemory extends WordList implements
 
     int added = 0;
 
-    //System.out.print("Node (word: "+node.isWord()+"): "+word);
-    //System.out.println(" index: "+index+" left: "+left);
-    System.out.println("Node: " + word + " adr: " + node.getAddress());
-
     if (request.length() > index) {
       Character letter = new Character(request.charAt(index));
 
-      //System.out.println("  Letter: " + letter.toString());
-      
       CharacterCollator collator = CharacterCollator.getInstance();
 
       for (Character l : node.getLettersList()) {
@@ -315,7 +302,6 @@ public class GSFMemory extends WordList implements
 
     LinkedList<Word> result = new LinkedList<Word>();
 
-    //System.out.println("Request: " + word);
     search(this.root, word, 0, count, result, "");
 
     return result;
