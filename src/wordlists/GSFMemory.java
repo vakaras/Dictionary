@@ -257,6 +257,7 @@ public class GSFMemory extends WordList implements
 
     //System.out.print("Node (word: "+node.isWord()+"): "+word);
     //System.out.println(" index: "+index+" left: "+left);
+    System.out.println("Node: " + word + " adr: " + node.getAddress());
 
     if (request.length() > index) {
       Character letter = new Character(request.charAt(index));
@@ -297,13 +298,13 @@ public class GSFMemory extends WordList implements
           }
         }
       for (Character l : node.getLettersList()) {
-          int addedNow = this.search(node.getNextNode(l), request, index+1, 
-              left, result, word+l.toString());
-          added += addedNow;
-          left -= addedNow;
-          if (left <= 0) {
-            return added;
-            }
+        int addedNow = this.search(node.getNextNode(l), request, index+1, 
+            left, result, word+l.toString());
+        added += addedNow;
+        left -= addedNow;
+        if (left <= 0) {
+          return added;
+          }
         }
       }
 

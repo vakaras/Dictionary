@@ -11,9 +11,9 @@ import junit.framework.*;
 import utils.Word;
 
 
-public class TestGSFMemory extends TestCase {
+public class TestGSFFile extends TestCase {
 
-  private wordlists.GSFMemory wordList;
+  private wordlists.GSFFile wordList;
 
   private void printResult(LinkedList<Word> result) {
 
@@ -23,23 +23,33 @@ public class TestGSFMemory extends TestCase {
 
     }
 
-  public void setUp() {
-    wordList = new wordlists.GSFMemory();
+  public void setUp() throws Exception {
+
+    wordlists.GSFMemory wordListMem = new wordlists.GSFMemory();
+    wordListMem.load("tests/test.dwa");
+    wordListMem.save("tests/test.gsf");
+
+    wordList = new wordlists.GSFFile();
+    }
+
+  public void tearDown() throws Exception {
+    File f = new File("tests/test.new.dwa");
+    f = new File("tests/test.gsf");
+    f.delete();
     }
   
   public void testFileLoad() throws Exception {
-    wordList.load("tests/test.dwa");
+    wordList.load("tests/test.gsf");
     }
 
   public void testSimpleSearch() throws Exception {
-    wordList.load("tests/test.dwa");
+    wordList.load("tests/test.gsf");
     wordList.search("aaaa", 1);
     }
 
   public void testSearch() throws Exception {
-    wordList.load("tests/test.dwa");
+    wordList.load("tests/test.gsf");
 
-    wordList.save("tests/test.gsf");
     LinkedList<Word> result = wordList.search("aaa", 5);
 
     super.assertEquals(5, result.size());
@@ -71,7 +81,7 @@ public class TestGSFMemory extends TestCase {
   
   public void testUnicodeSearch() throws Exception {
 
-    wordList.load("tests/test.dwa");
+    wordList.load("tests/test.gsf");
 
     LinkedList<Word> result = wordList.search("ąabh", 4);
 
@@ -98,38 +108,4 @@ public class TestGSFMemory extends TestCase {
     super.assertEquals("Description 13.", i.getDescription());
     }
 
-  public void testSave() throws Exception {
-
-    // TODO: Test case, when one word is prefix of other. With Unicode too.
-    
-    wordList.load("tests/test.dwa");
-    wordList.save("tests/test.gsf");
-
-    wordlists.GSFMemory wordListTemp = new wordlists.GSFMemory();
-    wordListTemp.load("tests/test.gsf");
-    wordListTemp.save("tests/test.new.dwa");
-
-    // Check if files content is not different.
-    Process diff = Runtime.getRuntime().exec(
-        new String[] {"diff", "tests/test.dwa", "tests/test.new.dwa"});
-
-    BufferedReader out = new BufferedReader( 
-        new InputStreamReader(diff.getInputStream()));
-
-    super.assertEquals("4c4", out.readLine());
-    super.assertEquals("< aaac=Description 4. Same key as in 3.", 
-        out.readLine());
-    super.assertEquals("---", out.readLine());
-    super.assertEquals("> aaac 1=Description 4. Same key as in 3.", 
-        out.readLine());
-    super.assertEquals(null, out.readLine());
-
-    // Delete file.
-    File f = new File("tests/test.new.dwa");
-    super.assertTrue(f.delete());
-
-    f = new File("tests/test.gsf");
-    super.assertTrue(f.delete());
-    }
-  
   }
