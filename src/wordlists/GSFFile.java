@@ -34,6 +34,8 @@ class FileNode {
     this.address = address;
     this.file = in;
 
+    System.out.print("seek: " + address + "\t");
+
     in.seek(address);
     
     while (true) {
@@ -60,6 +62,10 @@ class FileNode {
   
   public String getDefinition() {
     return this.definition;
+    }
+
+  public String getWord() {
+    return this.word;
     }
   
   public boolean isWord() {
@@ -100,7 +106,8 @@ public class GSFFile extends WordList implements IWordListFileRead {
 
     try {
       in = new RandomAccessFile(this.filename, "r");
-      FileNode root = new FileNode(in, 3);
+      in.seek(3);
+      FileNode root = new FileNode(in, new Integer(in.readInt()));
       this.search(root, word, 0, count, result);
       }
     finally {
@@ -112,9 +119,70 @@ public class GSFFile extends WordList implements IWordListFileRead {
     return result;
     }
 
+  /**
+   * Recursively search for a word.
+   * @param node – node, which is now being processed.
+   * @param request – word to search for.
+   * @param index – index of letter, which is being processed.
+   * @param left – how many definitions left to find.
+   * @param result – list, to which result will be added.
+   * @return how many words were added to result.
+   */
   private int search(FileNode node, String request, int index, int left, 
       LinkedList<Word> result) throws Exception {
-    throw new Exception("Not implemented!");
+
+    int added = 0;
+
+    System.out.print("Node: " + node.getWord());
+    System.out.println(" adr: " + node.getAddress());
+
+    if (request.length() > index) {
+      Character letter = new Character(request.charAt(index));
+
+      CharacterCollator collator = CharacterCollator.getInstance();
+
+      for (Character l : node.getLettersList()) {
+        if (collator.compare(letter, l) == 0) {
+          int addedNow = this.search(node.getNextNode(l), request, index+1,
+              left, result);
+          added += addedNow;
+          left -= addedNow;
+          if (left <= 0) {
+            return added;
+            }
+          }
+        if (collator.compare(letter, l) < 0) {
+          int addedNow = this.search(node.getNextNode(l), "", index+1,
+              left, result);
+          added += addedNow;
+          left -= addedNow;
+          if (left <= 0) {
+            return added;
+            }
+          }
+        }
+      }
+    else {
+      if (node.isWord()) {
+        result.add(new Word(node.getWord(), node.getDefinition()));
+        added++;
+        left--;
+        if (left <= 0) {
+          return added;
+          }
+        }
+      for (Character l : node.getLettersList()) {
+        int addedNow = this.search(node.getNextNode(l), request, index+1,
+            left, result);
+        added += addedNow;
+        left -= addedNow;
+        if (left <= 0) {
+          return added;
+          }
+        }
+      }
+
+    return added;
     }
 
   public void load(String filename) {
