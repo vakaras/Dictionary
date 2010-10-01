@@ -20,6 +20,33 @@ public class TestDWAFile extends TestCase {
     wordList.load("tests/test.dwa");
     }
 
+  public void testFileDoesNotExist() throws Exception {
+    try {
+      wordList.load("tests/notExist.dwa");
+      wordList.search("aaaa", 1);
+      super.fail("Should have gotten FileNotFoundException!");
+      }
+    catch (java.io.FileNotFoundException e) {
+      }
+    }
+
+  public void testInvalidCount() throws Exception {
+    try {
+      wordList.load("tests/test.dwa");
+      wordList.search("aaaa", 0);
+      super.fail("Should have gotten InvalidCountException!");
+      }
+    catch (wordlists.exceptions.InvalidCountException e) {
+      }
+    try {
+      wordList.load("tests/test.dwa");
+      wordList.search("aaaa", -2);
+      super.fail("Should have gotten InvalidCountException!");
+      }
+    catch (wordlists.exceptions.InvalidCountException e) {
+      }
+    }
+
   public void testSimpleSearch() throws Exception {
     wordList.load("tests/test.dwa");
     wordList.search("aaaa", 1);
@@ -84,5 +111,5 @@ public class TestDWAFile extends TestCase {
         "Description 11. Testing unicode characters and collation.",
         i.getDescription());
     }
-  
+
   }

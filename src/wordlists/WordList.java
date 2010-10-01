@@ -9,6 +9,9 @@ import utils.Word;
  */
 public abstract class WordList implements IWordList {
 
+  /**
+   * Look at IWordList interface documentation.
+   */
   public abstract LinkedList<Word> search(String word, int count) 
     throws Exception;
 

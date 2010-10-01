@@ -14,8 +14,9 @@ Dict.class:
 	javac -g -Xlint \
 		Dict.java \
 		wordlists/*.java \
+		wordlists/exceptions/*.java \
 		utils/*.java \
 		tests/*.java
 
 clean:
-	rm -f *.class */*.class
+	rm -f *.class */*.class */*/*.class
