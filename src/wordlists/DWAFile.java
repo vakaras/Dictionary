@@ -1,6 +1,7 @@
 package wordlists;
 
 import java.util.LinkedList;
+import java.text.Collator;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -34,8 +35,10 @@ public class DWAFile extends WordList implements IWordListFileRead {
       }
 
     LinkedList<Word> result = new LinkedList<Word>();
-
     BufferedReader in = null;
+    Collator collator = Collator.getInstance();
+                                        // FIXME: Collator must be WordList
+                                        // dependent, not program dependent.
 
     try {
       in = new BufferedReader(
@@ -48,7 +51,7 @@ public class DWAFile extends WordList implements IWordListFileRead {
         int splitPoint = str.indexOf('=');
         String w = str.substring(0, splitPoint);
         String d = str.substring(splitPoint+1);
-        if (w.startsWith(word)) {
+        if (collator.compare(word, w) <= 0) {
           result.add(new Word(w, d));
           count--;
           if (count <= 0)

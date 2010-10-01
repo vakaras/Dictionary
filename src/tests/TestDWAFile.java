@@ -57,7 +57,7 @@ public class TestDWAFile extends TestCase {
 
     LinkedList<Word> result = wordList.search("aaa", 5);
 
-    super.assertEquals(result.size(), 4);
+    super.assertEquals(5, result.size());
 
     Word i = result.get(0);
     super.assertEquals("aaaa", i.getWord());
@@ -77,39 +77,57 @@ public class TestDWAFile extends TestCase {
     super.assertEquals("Description 4. Same key as in 3.",
         i.getDescription());
 
+    i = result.get(4);
+    super.assertEquals("aabc", i.getWord());
+    super.assertEquals("Description 5.",
+        i.getDescription());
+
     }
   
   public void testUnicodeSearch() throws Exception {
 
     wordList.load("tests/test.dwa");
 
-    LinkedList<Word> result = wordList.search("ąa", 5);
+    LinkedList<Word> result = wordList.search("ąabh", 4);
 
     super.assertEquals(result.size(), 4);
 
     Word i = result.get(0);
-    super.assertEquals("ąabf", i.getWord());
-    super.assertEquals(
-        "Description 8.  Testing unicode characters and collation.",
-        i.getDescription());
-
-    i = result.get(1);
-    super.assertEquals("ąabg", i.getWord());
-    super.assertEquals(
-        "Description 9.  Testing unicode characters and collation.",
-        i.getDescription());
-
-    i = result.get(2);
     super.assertEquals("ąabi", i.getWord());
     super.assertEquals(
         "Description 10. Testing unicode characters and collation.",
         i.getDescription());
 
-    i = result.get(3);
+    i = result.get(1);
     super.assertEquals("ąačc", i.getWord());
     super.assertEquals(
         "Description 11. Testing unicode characters and collation.",
         i.getDescription());
+
+    i = result.get(2);
+    super.assertEquals("bbaa", i.getWord());
+    super.assertEquals("Description 12.", i.getDescription());
+
+    i = result.get(3);
+    super.assertEquals("bbab", i.getWord());
+    super.assertEquals("Description 13.", i.getDescription());
+
+    }
+
+  public void testSearchInTheEnd() throws Exception {
+
+    wordList.load("tests/test.dwa");
+
+    LinkedList<Word> result = wordList.search("bbai", 5);
+
+    super.assertEquals(4, result.size());
+    }
+
+  public void testConcurentSearch() throws Exception {
+
+    wordList.load("tests/test.dwa");
+
+    LinkedList<Word> result = wordList.search("ąa", 100);
     }
 
   }
