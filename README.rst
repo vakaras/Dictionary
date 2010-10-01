@@ -47,4 +47,4 @@ Reikalavimai
 ============
 
 .. code-block:: sh
-  sudo apt-get install junit junit-doc
+  sudo apt-get install junit4 junit4-doc

@@ -3,173 +3,178 @@ package tests;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import junit.framework.*;
+import org.junit.Test;
+import org.junit.Before;
+import org.junit.After;
+import org.junit.Assert;
 
 import utils.Word;
 
 
-public class TestDWAFile extends TestCase {
+public class TestDWAFile {
 
   private wordlists.DWAFile wordList;
 
   private void assertEquals(LinkedList<Word> expected, 
       LinkedList<Word> actual) {
 
-    super.assertEquals(expected.size(), actual.size());
+    Assert.assertEquals(expected.size(), actual.size());
 
     for (int i = 0; i < expected.size(); i++) {
       Word expectedWord = expected.get(i);
       Word actualWord = actual.get(i);
-      super.assertEquals(expectedWord.getWord(), actualWord.getWord());
-      super.assertEquals(expectedWord.getDescription(), 
+      Assert.assertEquals(expectedWord.getWord(), actualWord.getWord());
+      Assert.assertEquals(expectedWord.getDescription(), 
           actualWord.getDescription());
       }
     
     }
 
+  @Before
   public void setUp() {
     wordList = new wordlists.DWAFile();
     }
+
+  @After
+  public void tearDown() {
+    }
   
+  @Test
   public void testFileLoad() {
     wordList.load("tests/test.dwa");
     }
 
+  @Test(expected=java.io.FileNotFoundException.class)
   public void testFileDoesNotExist() throws Exception {
-    try {
-      wordList.load("tests/notExist.dwa");
-      wordList.search("aaaa", 1);
-      super.fail("Should have gotten FileNotFoundException!");
-      }
-    catch (java.io.FileNotFoundException e) {
-      }
+    wordList.load("tests/notExist.dwa");
+    wordList.search("aaaa", 1);
+    Assert.fail("Should have gotten FileNotFoundException!");
     }
 
-  public void testInvalidCount() throws Exception {
-    try {
-      wordList.load("tests/test.dwa");
-      wordList.search("aaaa", 0);
-      super.fail("Should have gotten InvalidCountException!");
-      }
-    catch (wordlists.exceptions.InvalidCountException e) {
-      }
-    try {
-      wordList.load("tests/test.dwa");
-      wordList.search("aaaa", -2);
-      super.fail("Should have gotten InvalidCountException!");
-      }
-    catch (wordlists.exceptions.InvalidCountException e) {
-      }
+  @Test(expected=wordlists.exceptions.InvalidCountException.class)
+  public void testInvalidCountZero() throws Exception {
+    wordList.load("tests/test.dwa");
+    wordList.search("aaaa", 0);
+    Assert.fail("Should have gotten InvalidCountException!");
     }
 
+  @Test(expected=wordlists.exceptions.InvalidCountException.class)
+  public void testInvalidCountNegative() throws Exception {
+    wordList.load("tests/test.dwa");
+    wordList.search("aaaa", -2);
+    Assert.fail("Should have gotten InvalidCountException!");
+    }
+
+  @Test
   public void testSimpleSearch() throws Exception {
     wordList.load("tests/test.dwa");
     wordList.search("aaaa", 1);
     }
 
+  @Test
   public void testSearch() throws Exception {
     wordList.load("tests/test.dwa");
 
     LinkedList<Word> result = wordList.search("aaa", 5);
 
-    super.assertEquals(5, result.size());
+    Assert.assertEquals(5, result.size());
 
     Word i = result.get(0);
-    super.assertEquals("aaaa", i.getWord());
-    super.assertEquals("Description 1.", i.getDescription());
+    Assert.assertEquals("aaaa", i.getWord());
+    Assert.assertEquals("Description 1.", i.getDescription());
 
     i = result.get(1);
-    super.assertEquals("aaab", i.getWord());
-    super.assertEquals("Description 2.", i.getDescription());
+    Assert.assertEquals("aaab", i.getWord());
+    Assert.assertEquals("Description 2.", i.getDescription());
 
     i = result.get(2);
-    super.assertEquals("aaac", i.getWord());
-    super.assertEquals("Description 3. Same key as in 4.", 
+    Assert.assertEquals("aaac", i.getWord());
+    Assert.assertEquals("Description 3. Same key as in 4.", 
         i.getDescription());
 
     i = result.get(3);
-    super.assertEquals("aaac", i.getWord());
-    super.assertEquals("Description 4. Same key as in 3.",
+    Assert.assertEquals("aaac", i.getWord());
+    Assert.assertEquals("Description 4. Same key as in 3.",
         i.getDescription());
 
     i = result.get(4);
-    super.assertEquals("aabc", i.getWord());
-    super.assertEquals("Description 5.",
+    Assert.assertEquals("aabc", i.getWord());
+    Assert.assertEquals("Description 5.",
         i.getDescription());
 
     }
   
+  @Test
   public void testUnicodeSearch() throws Exception {
 
     wordList.load("tests/test.dwa");
 
     LinkedList<Word> result = wordList.search("ąabh", 4);
 
-    super.assertEquals(result.size(), 4);
+    Assert.assertEquals(result.size(), 4);
 
     Word i = result.get(0);
-    super.assertEquals("ąabi", i.getWord());
-    super.assertEquals(
+    Assert.assertEquals("ąabi", i.getWord());
+    Assert.assertEquals(
         "Description 10. Testing unicode characters and collation.",
         i.getDescription());
 
     i = result.get(1);
-    super.assertEquals("ąačc", i.getWord());
-    super.assertEquals(
+    Assert.assertEquals("ąačc", i.getWord());
+    Assert.assertEquals(
         "Description 11. Testing unicode characters and collation.",
         i.getDescription());
 
     i = result.get(2);
-    super.assertEquals("bbaa", i.getWord());
-    super.assertEquals("Description 12.", i.getDescription());
+    Assert.assertEquals("bbaa", i.getWord());
+    Assert.assertEquals("Description 12.", i.getDescription());
 
     i = result.get(3);
-    super.assertEquals("bbab", i.getWord());
-    super.assertEquals("Description 13.", i.getDescription());
+    Assert.assertEquals("bbab", i.getWord());
+    Assert.assertEquals("Description 13.", i.getDescription());
 
     }
 
+  @Test
   public void testSearchInTheEnd() throws Exception {
 
     wordList.load("tests/test.dwa");
 
     LinkedList<Word> result = wordList.search("bbai", 5);
 
-    super.assertEquals(4, result.size());
+    Assert.assertEquals(4, result.size());
 
     Word i = result.get(0);
-    super.assertEquals("bbai", i.getWord());
-    super.assertEquals("Description 20.", i.getDescription());
+    Assert.assertEquals("bbai", i.getWord());
+    Assert.assertEquals("Description 20.", i.getDescription());
 
     i = result.get(1);
-    super.assertEquals("caa", i.getWord());
-    super.assertEquals(
+    Assert.assertEquals("caa", i.getWord());
+    Assert.assertEquals(
         "Description 21.  Testing if shorter is before longer.", 
         i.getDescription());
 
     i = result.get(2);
-    super.assertEquals("caaa", i.getWord());
-    super.assertEquals("Description 22.", i.getDescription());
+    Assert.assertEquals("caaa", i.getWord());
+    Assert.assertEquals("Description 22.", i.getDescription());
 
     i = result.get(3);
-    super.assertEquals("caab", i.getWord());
-    super.assertEquals("Description 23.", i.getDescription());
+    Assert.assertEquals("caab", i.getWord());
+    Assert.assertEquals("Description 23.", i.getDescription());
 
     }
 
   class RunnableSearch implements Runnable {
 
     private wordlists.WordList wordList = null;
-    private TestCase test = null;
     private String request = null;
     private int count = 0;
     private LinkedList<Word> result = null;
     private Throwable exception = null;
 
-    public RunnableSearch(wordlists.WordList wordList, TestCase test,
-        String request, int count) {
+    public RunnableSearch(wordlists.WordList wordList, String request, 
+        int count) {
       this.wordList = wordList;
-      this.test = test;
       this.request = request;
       this.count = count;
       }
@@ -195,6 +200,7 @@ public class TestDWAFile extends TestCase {
     
     }
 
+  @Test
   public void testConcurentSearch() throws Throwable {
 
     wordList.load("tests/test.dwa");
@@ -202,8 +208,8 @@ public class TestDWAFile extends TestCase {
     LinkedList<Word> expectedResultLong = wordList.search("", 100);
     LinkedList<Word> expectedResultShort = wordList.search("aa", 2);
 
-    RunnableSearch r1 = new RunnableSearch(wordList, this, "", 100);
-    RunnableSearch r2 = new RunnableSearch(wordList, this, "aa", 2);
+    RunnableSearch r1 = new RunnableSearch(wordList, "", 100);
+    RunnableSearch r2 = new RunnableSearch(wordList, "aa", 2);
 
     Thread thread1 = new Thread(r1);
     Thread thread2 = new Thread(r2);
