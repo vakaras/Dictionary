@@ -6,7 +6,9 @@ fresh: clean src
 src: Dict.class
 
 test: Dict.class
-	java org.junit.runner.JUnitCore tests.TestDWAFile
+	java org.junit.runner.JUnitCore \
+		tests.TestDWAFile \
+		tests.TestIWordList
 
 testold: Dict.class
 	java -cp .:/usr/share/java/junit.jar Dict test
