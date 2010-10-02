@@ -29,9 +29,9 @@ public class RunnableSearch implements Runnable {
   
   public void run() {
     try {
-      System.out.println("Started: \"" + this.request + "\"");
+      //System.out.println("Started: \"" + this.request + "\"");
       this.result = this.wordList.search(this.request, this.count);
-      System.out.println("Finished: \"" + this.request + "\"");
+      //System.out.println("Finished: \"" + this.request + "\"");
       }
     catch (Throwable e) {
       this.exception = e;

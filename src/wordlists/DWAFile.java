@@ -44,6 +44,8 @@ public class DWAFile extends WordList implements IWordListFileRead {
       in = new BufferedReader(
         new InputStreamReader(
           new FileInputStream(filename), "UTF8"));
+      String oldIdentifier = null;
+      String parentIdentifier = null;
       while (true) {
         String str = in.readLine();
         if (str == null)
@@ -57,6 +59,19 @@ public class DWAFile extends WordList implements IWordListFileRead {
         if (d.length() == 0) {
           throw new WrongFileFormatException("Empty definition.");
           }
+        //System.out.print("read: \"" + w + "\" --> \"");
+        w = Word.clearWordIdentifier(w);
+        //System.out.print(w + "\" --> \"");
+        if (parentIdentifier != null && 
+            collator.compare(parentIdentifier, w) == 0) {
+          w = Word.increaseWordIdentifier(oldIdentifier);
+          oldIdentifier = w;
+          }
+        else {
+          parentIdentifier = w;
+          oldIdentifier = w;
+          }
+        //System.out.println(w + "\"");
         if (collator.compare(word, w) <= 0) {
           result.add(new Word(w, d));
           count--;

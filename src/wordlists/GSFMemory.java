@@ -476,17 +476,7 @@ public class GSFMemory extends WordList implements
             break;
             }
           catch (Exception e) {
-            if (word.length() > 2 && word.charAt(word.length()-2) == ' ' &&
-                  Character.isDigit(word.charAt(word.length()-1))) {
-              char digit = word.charAt(word.length()-1);
-              String number = new String(new char[] {digit});
-              number = (new Integer(Integer.parseInt(number)+1)
-                  ).toString();
-              word = word.substring(0, word.length()-1) + number;
-              }
-            else {
-              word = word + " 1";
-              }
+            word = Word.increaseWordIdentifier(word);
             }
           }
 

@@ -108,29 +108,15 @@ public class TestWordList {
 
     Assert.assertEquals(5, result.size());
 
-    Word i = result.get(0);
-    Assert.assertEquals("aaaa", i.getWord());
-    Assert.assertEquals("Description 1.", i.getDescription());
+    Word[] expectedResult = new Word[] {
+      new Word("aaaa", "Description 1."),
+      new Word("aaab", "Description 2."),
+      new Word("aaac", "Description 3. Same key as in 4."),
+      new Word("aaac 1", "Description 4. Same key as in 3."),
+      new Word("aabc", "Description 5.")
+      };
 
-    i = result.get(1);
-    Assert.assertEquals("aaab", i.getWord());
-    Assert.assertEquals("Description 2.", i.getDescription());
-
-    i = result.get(2);
-    Assert.assertEquals("aaac", i.getWord());
-    Assert.assertEquals("Description 3. Same key as in 4.", 
-        i.getDescription());
-
-    i = result.get(3);
-    Assert.assertEquals("aaac", i.getWord());
-    Assert.assertEquals("Description 4. Same key as in 3.",
-        i.getDescription());
-
-    i = result.get(4);
-    Assert.assertEquals("aabc", i.getWord());
-    Assert.assertEquals("Description 5.",
-        i.getDescription());
-
+    TestUtils.assertEquals(expectedResult, result);
     }
 
   @Test
@@ -141,54 +127,61 @@ public class TestWordList {
 
     Assert.assertEquals(result.size(), 4);
 
-    Word i = result.get(0);
-    Assert.assertEquals("ąabi", i.getWord());
-    Assert.assertEquals(
-        "Description 10. Testing unicode characters and collation.",
-        i.getDescription());
+    Word[] expectedResult = new Word[] {
+      new Word("ąabi", 
+          "Description 10. Testing unicode characters and collation."),
+      new Word("ąačc", 
+          "Description 11. Testing unicode characters and collation."),
+      new Word("bbaa", "Description 12."),
+      new Word("bbab", "Description 13.")
+      };
 
-    i = result.get(1);
-    Assert.assertEquals("ąačc", i.getWord());
-    Assert.assertEquals(
-        "Description 11. Testing unicode characters and collation.",
-        i.getDescription());
-
-    i = result.get(2);
-    Assert.assertEquals("bbaa", i.getWord());
-    Assert.assertEquals("Description 12.", i.getDescription());
-
-    i = result.get(3);
-    Assert.assertEquals("bbab", i.getWord());
-    Assert.assertEquals("Description 13.", i.getDescription());
-
+    TestUtils.assertEquals(expectedResult, result);
     }
   
   @Test
   public void testSearchInTheEnd() throws Exception {
     this.fileLoad();
 
-    LinkedList<Word> result = wordList.search("bbai", 5);
+    LinkedList<Word> result = wordList.search("dbai", 5);
 
-    Assert.assertEquals(4, result.size());
+    Assert.assertEquals(3, result.size());
 
-    Word i = result.get(0);
-    Assert.assertEquals("bbai", i.getWord());
-    Assert.assertEquals("Description 20.", i.getDescription());
+    Word[] expectedResult = new Word[] {
+      new Word("dbai", "Description 25."),
+      new Word("eaa", 
+          "Description 26.  Testing if shorter is before longer."),
+      new Word("eaaa", "Description 27.")
+      };
 
-    i = result.get(1);
-    Assert.assertEquals("caa", i.getWord());
-    Assert.assertEquals(
-        "Description 21.  Testing if shorter is before longer.", 
-        i.getDescription());
+    TestUtils.assertEquals(expectedResult, result);
+    }
 
-    i = result.get(2);
-    Assert.assertEquals("caaa", i.getWord());
-    Assert.assertEquals("Description 22.", i.getDescription());
+  @Test
+  public void testIndentifierIncrement() throws Exception {
+    this.fileLoad();
 
-    i = result.get(3);
-    Assert.assertEquals("caab", i.getWord());
-    Assert.assertEquals("Description 23.", i.getDescription());
+    LinkedList<Word> result = wordList.search("bbag", 8);
 
+    Assert.assertEquals(8, result.size());
+
+    Word[] expectedResult = new Word[] {
+      new Word("bbag", "Description 18."),
+      new Word("bbah", "Description 19."),
+      new Word("caab", "Description 20. Same key in 23, 24, 25, 26 and 27"),
+      new Word("caab 1",
+          "Description 21. Same key in 23, 24, 25, 26 and 27"),
+      new Word("caab 2", 
+          "Description 22. Same key in 23, 24, 25, 26 and 27"),
+      new Word("caab 3",
+          "Description 23. Same key in 23, 24, 25, 26 and 27"),
+      new Word("caab 4",
+          "Description 24. Same key in 23, 24, 25, 26 and 27"),
+      new Word("dbai", "Description 25.")
+      };
+
+    TestUtils.assertEquals(expectedResult, result);
+    
     }
   
   @Test

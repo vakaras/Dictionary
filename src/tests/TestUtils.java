@@ -8,8 +8,8 @@ import utils.Word;
 
 public class TestUtils {
 
-  public static void assertEquals(LinkedList<Word> expected, 
-      LinkedList<Word> actual) {
+  public static void assertEquals(
+      LinkedList<Word> expected, LinkedList<Word> actual) {
 
     Assert.assertEquals(expected.size(), actual.size());
 
@@ -18,6 +18,22 @@ public class TestUtils {
       Word actualWord = actual.get(i);
       Assert.assertEquals(expectedWord.getWord(), actualWord.getWord());
       Assert.assertEquals(expectedWord.getDescription(), 
+          actualWord.getDescription());
+      }
+    
+    }
+
+  public static void assertEquals(
+      Word[] expected, LinkedList<Word> actual) {
+
+    Assert.assertEquals(expected.length, actual.size());
+
+    for (int i = 0; i < expected.length; i++) {
+      Word expectedWord = expected[i];
+      Word actualWord = actual.get(i);
+      Assert.assertEquals(expectedWord.getWord(), actualWord.getWord());
+      Assert.assertEquals(
+          expectedWord.getDescription(), 
           actualWord.getDescription());
       }
     
