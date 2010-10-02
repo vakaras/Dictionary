@@ -14,7 +14,7 @@ public class Manager {
   public static Collection getWordListsWithFileExtensions() {
     return Arrays.asList(new Object[][] {
       { "wordlists.DWAFile", ".dwa" },
-    //{ "wordlists.DWAMemory", ".dwa" },
+      { "wordlists.DWAMemory", ".dwa" },
       { "wordlists.GSFFile", ".gsf" },
     //{ "wordlists.GSFMemory", ".gsf" },
     //{ "wordlists.GSFMemory", ".dwa" },

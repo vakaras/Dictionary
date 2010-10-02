@@ -1,8 +1,8 @@
 package wordlists.exceptions;
 
 /**
- * Exception which is thrown, when is detected that word list file format
- * is wrong.
+ * Exception which is thrown, when is tried to access node which doesn't
+ * exist.
  */
 public class NodeNotExistsException extends DamagedWordListException {
 
