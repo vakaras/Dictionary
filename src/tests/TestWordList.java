@@ -1,66 +1,108 @@
 package tests;
 
 import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.Arrays;
+import java.util.Collection;
+import java.io.File;
 
 import org.junit.Test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.BeforeClass;
+import org.junit.AfterClass;
+import org.junit.runners.Parameterized.Parameters;
+import org.junit.runners.Parameterized;
+import org.junit.runner.RunWith;
 import org.junit.Assert;
 
 import utils.Word;
+import wordlists.*;
+import wordlists.exceptions.*;
 import tests.TestUtils;
 import tests.runnable.*;
 
+/**
+ * Tester class for classes which extends WordList class.
+ */
+@RunWith(value=Parameterized.class)
+public class TestWordList {
 
-public class TestDWAFile {
+  private WordList wordList = null;
+  private String className = null;
+  private String testFile = null;
+  private String fileExtension = null;
 
-  private wordlists.DWAFile wordList;
+  /**
+   * Creates testing environment.
+   *
+   * If given class object implements IWordList interface, then sets 
+   * wordList field to point to that object. If not, leaves it null.
+   *
+   * @param className – the name of class to be used as wordList.
+   * @param fileExtension – test file extension.
+   */
+  public TestWordList(String className, String fileExtension) 
+      throws Exception {
 
-  @Before
-  public void setUp() {
-    wordList = new wordlists.DWAFile();
+    this.className = className;
+    this.fileExtension = fileExtension;
+    this.testFile = "tests/test" + this.fileExtension;
+
+    Object o = Class.forName(className).newInstance();
+
+    //if (o instanceof wordlists.WordList) {
+    this.wordList = (WordList) o;
     }
 
-  @After
-  public void tearDown() {
+  /**
+   * Gives word lists, which need to be tested.
+   */
+  @Parameters
+  public static Collection getWordLists() {
+    return Manager.getWordListsWithFileExtensions();
+    }
+
+  @BeforeClass
+  public static void setUpClass() throws Exception {
+    GSFMemory wordListMem = new GSFMemory();
+    wordListMem.load("tests/test.dwa");
+    wordListMem.save("tests/test.gsf");
     }
   
+  @AfterClass
+  public static void tearDownClass() {
+    File f = new File("tests/test.gsf");
+    f.delete();
+    }
+
   @Test
-  public void testFileLoad() {
-    wordList.load("tests/test.dwa");
+  public void fileLoad() throws Exception {
+    // Making an assumption that all WordLists implements 
+    // IWordListFileRead interface.
+    ((IWordListFileRead) this.wordList).load(this.testFile);
+    this.wordList.search("aaaa", 1);
     }
 
   @Test(expected=java.io.FileNotFoundException.class)
   public void testFileDoesNotExist() throws Exception {
-    wordList.load("tests/notExist.dwa");
-    wordList.search("aaaa", 1);
-    Assert.fail("Should have gotten FileNotFoundException!");
+    ((IWordListFileRead) this.wordList).load("tests/notExist" + 
+      this.fileExtension);
+    this.wordList.search("aaaa", 1);
     }
 
-  @Test(expected=wordlists.exceptions.InvalidCountException.class)
+  @Test(expected=InvalidCountException.class)
   public void testInvalidCountZero() throws Exception {
-    wordList.load("tests/test.dwa");
-    wordList.search("aaaa", 0);
-    Assert.fail("Should have gotten InvalidCountException!");
+    this.fileLoad();
+    this.wordList.search("aaaa", 0);
     }
 
-  @Test(expected=wordlists.exceptions.InvalidCountException.class)
+  @Test(expected=InvalidCountException.class)
   public void testInvalidCountNegative() throws Exception {
-    wordList.load("tests/test.dwa");
-    wordList.search("aaaa", -2);
-    Assert.fail("Should have gotten InvalidCountException!");
-    }
-
-  @Test
-  public void testSimpleSearch() throws Exception {
-    wordList.load("tests/test.dwa");
-    wordList.search("aaaa", 1);
+    this.fileLoad();
+    this.wordList.search("aaaa", -2);
     }
 
   @Test
   public void testSearch() throws Exception {
-    wordList.load("tests/test.dwa");
+    this.fileLoad();
 
     LinkedList<Word> result = wordList.search("aaa", 5);
 
@@ -90,11 +132,10 @@ public class TestDWAFile {
         i.getDescription());
 
     }
-  
+
   @Test
   public void testUnicodeSearch() throws Exception {
-
-    wordList.load("tests/test.dwa");
+    this.fileLoad();
 
     LinkedList<Word> result = wordList.search("ąabh", 4);
 
@@ -121,11 +162,10 @@ public class TestDWAFile {
     Assert.assertEquals("Description 13.", i.getDescription());
 
     }
-
+  
   @Test
   public void testSearchInTheEnd() throws Exception {
-
-    wordList.load("tests/test.dwa");
+    this.fileLoad();
 
     LinkedList<Word> result = wordList.search("bbai", 5);
 
@@ -150,11 +190,10 @@ public class TestDWAFile {
     Assert.assertEquals("Description 23.", i.getDescription());
 
     }
-
+  
   @Test
   public void testConcurentSearch() throws Throwable {
-
-    wordList.load("tests/test.dwa");
+    this.fileLoad();
 
     LinkedList<Word> expectedResultLong = wordList.search("", 100);
     LinkedList<Word> expectedResultShort = wordList.search("aa", 2);

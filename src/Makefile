@@ -8,7 +8,7 @@ src: Dict.class
 test: Dict.class
 	java org.junit.runner.JUnitCore \
 		tests.TestDWAFile \
-		tests.TestIWordList
+		tests.TestWordList
 
 testold: Dict.class
 	java -cp .:/usr/share/java/junit.jar Dict test
@@ -22,7 +22,8 @@ Dict.class:
 		wordlists/*.java \
 		wordlists/exceptions/*.java \
 		utils/*.java \
-		tests/*.java
+		tests/*.java \
+		tests/runnable/*.java
 
 clean:
 	rm -f *.class */*.class */*/*.class
