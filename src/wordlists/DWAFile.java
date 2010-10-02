@@ -51,6 +51,12 @@ public class DWAFile extends WordList implements IWordListFileRead {
         if (str == null)
           break;
         int splitPoint = str.indexOf('=');
+        // TODO: Check cases, when WrongFileFormatException should be 
+        // thrown.
+        if (splitPoint == -1) {
+          throw new WrongFileFormatException(
+              "Separator '=' was not found.");
+          }
         String w = str.substring(0, splitPoint);
         String d = str.substring(splitPoint+1);
         if (w.length() == 0) {
