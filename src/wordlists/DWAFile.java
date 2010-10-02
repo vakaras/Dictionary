@@ -8,7 +8,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
 import java.io.IOException;
-import wordlists.exceptions.InvalidCountException;
+import wordlists.exceptions.*;
 
 import utils.Word;
 
@@ -27,7 +27,7 @@ public class DWAFile extends WordList implements IWordListFileRead {
    * Look at WordList class documentation.
    */
   public LinkedList<Word> search(String word, int count) 
-    throws IOException, InvalidCountException {
+    throws IOException, InvalidCountException, WrongFileFormatException {
 
     if (count < 1) {
       throw new InvalidCountException("Count must be possitive number. " +
@@ -51,6 +51,12 @@ public class DWAFile extends WordList implements IWordListFileRead {
         int splitPoint = str.indexOf('=');
         String w = str.substring(0, splitPoint);
         String d = str.substring(splitPoint+1);
+        if (w.length() == 0) {
+          throw new WrongFileFormatException("Empty identifier.");
+          }
+        if (d.length() == 0) {
+          throw new WrongFileFormatException("Empty definition.");
+          }
         if (collator.compare(word, w) <= 0) {
           result.add(new Word(w, d));
           count--;
