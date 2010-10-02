@@ -7,7 +7,6 @@ src: Dict.class
 
 test: Dict.class
 	java org.junit.runner.JUnitCore \
-		tests.TestDWAFile \
 		tests.TestWordList
 
 testold: Dict.class
