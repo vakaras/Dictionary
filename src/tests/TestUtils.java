@@ -1,6 +1,9 @@
 package tests;
 
 import java.util.LinkedList;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.File;
 
 import org.junit.Assert;
 
@@ -37,6 +40,37 @@ public class TestUtils {
           actualWord.getDescription());
       }
     
+    }
+
+  public static void assertFilesEquals(
+      String oldFileName, String newFileName, String[] expectedDiffOutput) 
+      throws Exception {
+
+    Process diff = Runtime.getRuntime().exec(
+        new String[] {"diff", oldFileName, newFileName});
+
+    BufferedReader out = null;
+    try {
+      out = new BufferedReader(
+          new InputStreamReader(diff.getInputStream()));
+
+      for (String line : expectedDiffOutput) {
+        Assert.assertEquals(line, out.readLine());
+        }
+      
+      Assert.assertEquals(null, out.readLine());
+      }
+    finally {
+      if (out != null) {
+        out.close();
+        }
+      }
+
+    }
+  
+  public static void deleteFile(String fileName) throws Exception {
+    File f = new File(fileName);
+    Assert.assertTrue(f.delete());
     }
 
   }

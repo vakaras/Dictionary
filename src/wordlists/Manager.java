@@ -21,4 +21,15 @@ public class Manager {
       });
     }
 
+  /**
+   * @return Collection of [<String_class_name>, <String_file_extension>]
+   */
+  public static Collection getChangeableWordListsWithFileExtensions() {
+    return Arrays.asList(new Object[][] {
+      { "wordlists.DWAMemory", ".dwa" },
+    //{ "wordlists.GSFMemory", ".gsf" },
+    //{ "wordlists.GSFMemory", ".dwa" },
+      });
+    }
+
   }

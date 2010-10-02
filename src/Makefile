@@ -7,7 +7,8 @@ src: Dict.class
 
 test: Dict.class
 	java org.junit.runner.JUnitCore \
-		tests.TestWordList
+		tests.TestWordList \
+		tests.TestIWordListChange
 
 testold: Dict.class
 	java -cp .:/usr/share/java/junit.jar Dict test

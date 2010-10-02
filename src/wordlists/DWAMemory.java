@@ -169,11 +169,11 @@ public class DWAMemory extends WordList implements
 
     while (iter.hasNext()) {
       Word w = iter.next();
-      if (word.equals(w.getWord())) {
+      if (collator.compare(word, w.getWord()) == 0) {
         throw new DuplicateIdentifierException("Word already exists!");
         }
       if (collator.compare(word, w.getWord()) < 0) {
-        // TODO: Check if works!
+        iter.previous();
         iter.add(new Word(word, definition));
         return;
         }
