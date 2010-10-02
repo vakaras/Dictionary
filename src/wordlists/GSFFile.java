@@ -5,8 +5,9 @@ import java.util.TreeMap;
 import java.util.Set;
 
 import java.io.RandomAccessFile;
+import java.io.IOException;
 
-import wordlists.exceptions.InvalidCountException;
+import wordlists.exceptions.*;
 
 import utils.Word;
 import utils.CharacterCollator;
@@ -34,12 +35,25 @@ public class GSFFile extends WordList implements IWordListFileRead {
     private Integer address;
     private RandomAccessFile file;
 
-    public Node(RandomAccessFile in, Integer address) throws Exception {
+    /**
+     * Reads Node from GSF file.
+     *
+     * @param in – GSF file.
+     * @param address – node offset in file.
+     */
+    public Node(RandomAccessFile in, Integer address) throws IOException {
       this(in, address, "");
       }
     
+    /**
+     * Reads Node from GSF file.
+     *
+     * @param in – GSF file.
+     * @param address – node offset in file.
+     * @param word – what word this node represents.
+     */
     private Node(RandomAccessFile in, Integer address, String word) 
-        throws Exception {
+        throws IOException {
       CharacterCollator collator = CharacterCollator.getInstance();
                                         // FIXME: Collator must 
                                         // be WordList dependent, 
@@ -65,26 +79,55 @@ public class GSFFile extends WordList implements IWordListFileRead {
 
       }
     
-    public Node getNextNode(Character symbol) throws Exception {
+    /**
+     * Returns next node from GSF file.
+     *
+     * @param symbol – "pointer" to next node in trie.
+     * @return next Node by symbol in trie.
+     */
+    public Node getNextNode(Character symbol) 
+        throws NodeNotExistsException, IOException {
       if (!this.next.containsKey(symbol)) {
-        throw new Exception("Node doesn't exist.");
+        throw new NodeNotExistsException(
+            "Node referenced by \'" + symbol + "\' doesn't exist.");
         }
       return new Node(this.file, this.next.get(symbol), 
           word + symbol.toString());
       }
     
+    /**
+     * Returns word definition.
+     *
+     * @return Word definition or null if isWord is false.
+     */
     public String getDefinition() {
       return this.definition;
       }
 
+    /**
+     * Returns word identifier.
+     *
+     * @return Word identifier, which must be unique in this word list.
+     */
     public String getWord() {
       return this.word;
       }
     
+    /** 
+     * Returns if this node represents word.
+     *
+     * @return true if represent, false – otherwise.
+     */
     public boolean isWord() {
       return this.definition != null;
       }
     
+    /**
+     * Returns symbols with which other trie nodes could be reached from 
+     * this node.
+     *
+     * @return list of letters, which could be used for getNextNode.
+     */
     public LinkedList<Character> getLettersList() {
       Set<Character> keySet = this.next.keySet();
       LinkedList<Character> keys = new LinkedList<Character>();
@@ -96,12 +139,22 @@ public class GSFFile extends WordList implements IWordListFileRead {
       return keys;
       }
     
+    /**
+     * Returns node offset in file.
+     *
+     * @return node offset in file, which was passed to constructor.
+     */
     public Integer getAddress() {
       return this.address;
       }
 
     }
-  public LinkedList<Word> search(String word, int count) throws Exception {
+
+  /**
+   * Look at WordList class documentation.
+   */
+  public LinkedList<Word> search(String word, int count) 
+    throws IOException, InvalidCountException, WrongFileFormatException {
 
     if (count < 1) {
       throw new InvalidCountException("Count must be possitive number. " +
@@ -117,6 +170,10 @@ public class GSFFile extends WordList implements IWordListFileRead {
       in.seek(3);
       Node root = new Node(in, new Integer(in.readInt()));
       this.search(root, word, 0, count, result);
+      }
+    catch (NodeNotExistsException e) {
+      throw new WrongFileFormatException(
+          "NodeNotExistsException was cached in GSFFile.");
       }
     finally {
       if (in != null) {
@@ -137,7 +194,7 @@ public class GSFFile extends WordList implements IWordListFileRead {
    * @return how many words were added to result.
    */
   private int search(Node node, String request, int index, int left, 
-      LinkedList<Word> result) throws Exception {
+      LinkedList<Word> result) throws IOException, NodeNotExistsException {
 
     int added = 0;
 
@@ -190,6 +247,9 @@ public class GSFFile extends WordList implements IWordListFileRead {
     return added;
     }
 
+  /**
+   * Look at IWordListFileRead interface documentation.
+   */
   public void load(String filename) {
     this.filename = filename;
     return;

@@ -15,7 +15,7 @@ public class Manager {
     return Arrays.asList(new Object[][] {
       { "wordlists.DWAFile", ".dwa" },
     //{ "wordlists.DWAMemory", ".dwa" },
-    //{ "wordlists.GSFFile", ".gsf" },
+      { "wordlists.GSFFile", ".gsf" },
     //{ "wordlists.GSFMemory", ".gsf" },
     //{ "wordlists.GSFMemory", ".dwa" },
       });
