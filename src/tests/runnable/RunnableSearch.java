@@ -6,13 +6,13 @@ import utils.Word;
 
 public class RunnableSearch implements Runnable {
 
-  private wordlists.WordList wordList = null;
+  private wordlists.IWordList wordList = null;
   private String request = null;
   private int count = 0;
   private LinkedList<Word> result = null;
   private Throwable exception = null;
 
-  public RunnableSearch(wordlists.WordList wordList, String request, 
+  public RunnableSearch(wordlists.IWordList wordList, String request, 
       int count) {
     this.wordList = wordList;
     this.request = request;
@@ -29,9 +29,9 @@ public class RunnableSearch implements Runnable {
   
   public void run() {
     try {
-      //System.out.println("Started: \"" + this.request + "\"");
+      //System.out.println("Search started: \"" + this.request + "\"");
       this.result = this.wordList.search(this.request, this.count);
-      //System.out.println("Finished: \"" + this.request + "\"");
+      //System.out.println("Search finished: \"" + this.request + "\"");
       }
     catch (Throwable e) {
       this.exception = e;

@@ -13,6 +13,10 @@ import org.junit.Assert;
 
 import wordlists.*;
 import wordlists.exceptions.*;
+import utils.Word;
+
+import tests.TestUtils;
+import tests.runnable.*;
 
 /**
  * Tester class for classes which implements IWordListChange interface.
@@ -214,6 +218,106 @@ public class TestIWordListChange {
 
     this.wordList.addWord("aaaa", "Some definition.");
 
+    }
+
+  public int recursiveAdd(
+      Character[] sequence, int depth, int maxDepth, String word, 
+      int number) throws Exception {
+
+    if (maxDepth <= depth) {
+      this.wordList.addWord(word, "Definition: " + number);
+      return 1;
+      }
+    
+    int added = 0;
+    for (Character c : sequence) {
+      if ((number + added) % 3 == 0) {
+        this.wordList.addWord(
+            word + c.toString(), "Definition: " + (number + added));
+        added++;
+        }
+      else {
+        added += recursiveAdd(sequence, depth+1, maxDepth, 
+            word+c.toString(), number+added);
+        }
+      }
+    
+    return added;
+    }
+  
+  public void createLargeWordList() throws Exception {
+    
+    this.recursiveAdd(
+        new Character[] {
+          'v', 'x', 'ū', 'ų', 'u', 'l', 'k', 'g', 'e', 'ė', },
+        0, 4, "", 0);
+
+    // Making an assumption that all WordLists that implements 
+    // IWordListChange interface also implements IWordListFileWrite 
+    // interface.
+    ((IWordListFileWrite) this.wordList).save(
+      "tests/test.large" + this.fileExtension);
+
+    }
+
+  @Test
+  public void concurentAdd() throws Throwable {
+
+    this.createLargeWordList();
+
+    // Making an assumption that all WordLists that implements 
+    // IWordListChange interface also implements IWordList interface.
+    IWordList wl = (IWordList) this.wordList;
+    
+    LinkedList<Word> expectedResultLong = wl.search("", 2000);
+    LinkedList<Word> expectedResultShort = wl.search("aa", 2);
+
+    RunnableSearch searchLong = new RunnableSearch(wl, "", 2000);
+    RunnableSearch searchShort = new RunnableSearch(wl, "aa", 2);
+    RunnableAdd addLong = new RunnableAdd(
+        this.wordList, "evla", "Added 01.");
+    RunnableAdd addShort = new RunnableAdd(
+        this.wordList, "eeea", "Added 02.");
+
+    Thread searchThreadLong = new Thread(searchLong);
+    Thread searchThreadShort = new Thread(searchShort);
+    Thread addThreadLong = new Thread(addLong);
+    Thread addThreadShort = new Thread(addShort);
+
+    searchThreadLong.start();
+    searchThreadShort.start();
+    addThreadLong.start();
+    addThreadShort.start();
+
+    searchThreadLong.join();
+    searchThreadShort.join();
+    addThreadLong.join();
+    addThreadShort.join();
+
+    Throwable e = searchLong.getException();
+    if (e != null) {
+      throw e;
+      }
+    e = searchShort.getException();
+    if (e != null) {
+      throw e;
+      }
+    e = addLong.getException();
+    if (e != null) {
+      throw e;
+      }
+    e = addShort.getException();
+    if (e != null) {
+      throw e;
+      }
+
+    LinkedList<Word> concurentResultLong = searchLong.getResult();
+    LinkedList<Word> concurentResultShort = searchShort.getResult();
+
+    TestUtils.assertEquals(expectedResultLong, concurentResultLong);
+    TestUtils.assertEquals(expectedResultShort, concurentResultShort);
+    
+    TestUtils.deleteFile("tests/test.large" + this.fileExtension);
     }
 
   }
