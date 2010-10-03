@@ -16,8 +16,8 @@ public class Manager {
       { "wordlists.DWAFile", ".dwa" },
       { "wordlists.DWAMemory", ".dwa" },
       { "wordlists.GSFFile", ".gsf" },
+      { "wordlists.GSFMemory", ".dwa" },
     //{ "wordlists.GSFMemory", ".gsf" },
-    //{ "wordlists.GSFMemory", ".dwa" },
       });
     }
 

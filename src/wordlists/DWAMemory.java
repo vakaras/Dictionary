@@ -27,8 +27,6 @@ import utils.Word;
  */
 public class DWAMemory extends WordList implements 
   IWordListChange, IWordListFileWrite, IWordListFileRead {
-  // TODO: Write tests.
-  // FIXME: Make synchronized!!!
 
   private String filename = null;
   private LinkedList<Word> data = null;
