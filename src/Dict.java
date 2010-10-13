@@ -5,6 +5,8 @@
  */
 
 import services.ServiceFactory;
+import wordlists.WordListFactory;
+import config.Config;
 
 /**
  * The Dict class implements an application, which allows user to get
