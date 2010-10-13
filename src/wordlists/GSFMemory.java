@@ -261,7 +261,8 @@ public class GSFMemory extends WordList implements
       throws IOException, DamagedWordListException {
 
     if (node.isWord()) {
-      out.write(word+"="+node.getDefinition());
+      String w = Word.clearWordIdentifier(word);
+      out.write(w+"="+node.getDefinition());
       out.newLine();
       }
     
@@ -506,8 +507,9 @@ public class GSFMemory extends WordList implements
 
       }
     catch (NodeNotExistsException e) {
-      throw new DamagedWordListException(
-          "NodeNotExistsException in updateWord was cought.");
+      throw new IdentifierNotExistsException("Word not found!");
+    //throw new DamagedWordListException(
+    //    "NodeNotExistsException in updateWord was cought.");
       }
     finally {
       this.writeLock.unlock();

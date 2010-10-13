@@ -14,6 +14,7 @@ public class CharacterCollator implements Comparator<Object> {
 
   private CharacterCollator () {
     this.stringCollator = Collator.getInstance();
+    this.stringCollator.setStrength(Collator.IDENTICAL);
     }
   
   public static CharacterCollator getInstance() {
