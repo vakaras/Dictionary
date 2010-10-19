@@ -1,7 +1,7 @@
 package wordlists;
 
 import java.util.LinkedList;
-import java.text.Collator;
+import java.util.Comparator;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -11,6 +11,7 @@ import java.io.IOException;
 import wordlists.exceptions.*;
 
 import utils.Word;
+import utils.StringCollator;
 
 /**
  * Class implementing word list working with DWA files, while not loading 
@@ -22,6 +23,16 @@ import utils.Word;
 public class DWAFile extends WordList implements IWordListFileRead {
 
   private String filename = null;
+  private Comparator<Object> collator = null;
+
+  /**
+   * Default constructor.
+   */
+  public DWAFile() {
+    this.collator = StringCollator.getInstance();
+                                        // FIXME: Collator must be WordList
+                                        // dependent, not program dependent.
+    }
 
   /**
    * Look at WordList class documentation.
@@ -36,9 +47,6 @@ public class DWAFile extends WordList implements IWordListFileRead {
 
     LinkedList<Word> result = new LinkedList<Word>();
     BufferedReader in = null;
-    Collator collator = Collator.getInstance();
-                                        // FIXME: Collator must be WordList
-                                        // dependent, not program dependent.
 
     try {
       in = new BufferedReader(
@@ -69,7 +77,7 @@ public class DWAFile extends WordList implements IWordListFileRead {
         w = Word.clearWordIdentifier(w);
         //System.out.print(w + "\" --> \"");
         if (parentIdentifier != null && 
-            collator.compare(parentIdentifier, w) == 0) {
+            this.collator.compare(parentIdentifier, w) == 0) {
           w = Word.increaseWordIdentifier(oldIdentifier);
           oldIdentifier = w;
           }
@@ -78,7 +86,7 @@ public class DWAFile extends WordList implements IWordListFileRead {
           oldIdentifier = w;
           }
         //System.out.println(w + "\"");
-        if (collator.compare(word, w) <= 0) {
+        if (this.collator.compare(word, w) <= 0) {
           result.add(new Word(w, d));
           count--;
           if (count <= 0)

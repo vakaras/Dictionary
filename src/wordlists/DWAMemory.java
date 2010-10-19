@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.Lock;
-import java.text.Collator;
+import java.util.Comparator;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -17,6 +17,7 @@ import java.io.IOException;
 import wordlists.exceptions.*;
 
 import utils.Word;
+import utils.StringCollator;
 
 /**
  * Class implementing word list working with DWA files, which it loads into
@@ -29,12 +30,21 @@ public class DWAMemory extends WordList implements
   IWordListChange, IWordListFileWrite, IWordListFileRead {
 
   private String filename = null;
+  private Comparator<Object> collator = null;
   private LinkedList<Word> data = null;
 
   private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
   private final Lock readLock = lock.readLock();
   private final Lock writeLock = lock.writeLock();
 
+  /**
+   * Default constructor.
+   */
+  public DWAMemory() {
+    this.collator = StringCollator.getInstance();
+                                        // FIXME: Collator must be WordList
+                                        // dependent, not program dependent.
+    }
 
   /**
    * Look at WordList class documentation.
@@ -49,14 +59,10 @@ public class DWAMemory extends WordList implements
 
     LinkedList<Word> result = new LinkedList<Word>();
 
-    Collator collator = Collator.getInstance();
-                                        // FIXME: Collator must be WordList
-                                        // dependent, not program dependent.
-
     this.readLock.lock();
     try {
       for (Word w: this.data) {
-        if (collator.compare(word, w.getWord()) <= 0) {
+        if (this.collator.compare(word, w.getWord()) <= 0) {
           result.add(w);
           count--;
           if (count <= 0)
@@ -81,9 +87,6 @@ public class DWAMemory extends WordList implements
     this.data = new LinkedList<Word>();
 
     BufferedReader in = null;
-    Collator collator = Collator.getInstance();
-                                        // FIXME: Collator must be WordList
-                                        // dependent, not program dependent.
     
     this.writeLock.lock();
     try {
@@ -115,7 +118,7 @@ public class DWAMemory extends WordList implements
         w = Word.clearWordIdentifier(w);
         //System.out.print(w + "\" --> \"");
         if (parentIdentifier != null && 
-            collator.compare(parentIdentifier, w) == 0) {
+            this.collator.compare(parentIdentifier, w) == 0) {
           w = Word.increaseWordIdentifier(oldIdentifier);
           oldIdentifier = w;
           }
@@ -170,14 +173,11 @@ public class DWAMemory extends WordList implements
       throws InvalidIdentifierException, InvalidDefinitionException, 
         DuplicateIdentifierException {
 
-    Collator collator = Collator.getInstance();
-                                        // FIXME: Collator must be WordList
-                                        // dependent, not program dependent.
-    if (collator.compare(word.trim(), "") == 0) {
+    if (this.collator.compare(word.trim(), "") == 0) {
       throw new InvalidIdentifierException(
           "Identifier can not be empty.");
       }
-    if (collator.compare(definition.trim(), "") == 0) {
+    if (this.collator.compare(definition.trim(), "") == 0) {
       throw new InvalidDefinitionException(
           "Definition can not be empty.");
       }
@@ -188,11 +188,11 @@ public class DWAMemory extends WordList implements
 
       while (iter.hasNext()) {
         Word w = iter.next();
-        if (collator.compare(word, w.getWord()) == 0) {
+        if (this.collator.compare(word, w.getWord()) == 0) {
           throw new DuplicateIdentifierException(
               "Word \"" + word + "\" already exists!");
           }
-        if (collator.compare(word, w.getWord()) < 0) {
+        if (this.collator.compare(word, w.getWord()) < 0) {
           iter.previous();
           iter.add(new Word(word, definition));
           return;
@@ -214,10 +214,7 @@ public class DWAMemory extends WordList implements
   public void updateWord(String word, String definition) 
       throws InvalidDefinitionException, IdentifierNotExistsException {
 
-    Collator collator = Collator.getInstance();
-                                        // FIXME: Collator must be WordList
-                                        // dependent, not program dependent.
-    if (collator.compare(definition.trim(), "") == 0) {
+    if (this.collator.compare(definition.trim(), "") == 0) {
       throw new InvalidDefinitionException(
           "Definition can not be empty.");
       }
@@ -228,7 +225,7 @@ public class DWAMemory extends WordList implements
 
       while (iter.hasNext()) {
         Word w = iter.next();
-        if (collator.compare(word, w.getWord()) == 0) {
+        if (this.collator.compare(word, w.getWord()) == 0) {
           iter.set(new Word(word, definition));
           return;
           }
@@ -247,17 +244,13 @@ public class DWAMemory extends WordList implements
    */
   public void eraseWord(String word) throws IdentifierNotExistsException {
 
-    Collator collator = Collator.getInstance();
-                                        // FIXME: Collator must be WordList
-                                        // dependent, not program dependent.
-                                        
     this.writeLock.lock();
     try {
       ListIterator<Word> iter = this.data.listIterator(0);
 
       while (iter.hasNext()) {
         Word w = iter.next();
-        if (collator.compare(word, w.getWord()) == 0) {
+        if (this.collator.compare(word, w.getWord()) == 0) {
           iter.remove();
           return;
           }

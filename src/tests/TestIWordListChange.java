@@ -183,10 +183,9 @@ public class TestIWordListChange {
     TestUtils.assertFilesEquals(
         "tests/test.dwa", "tests/test.new.dwa",
         new String[] {
-          "1a2",
-          "> ąaaa=Added word 01",
-          "8a10",
+          "7a8,9",
           "> aabg=Added word 02",
+          "> ąaaa=Added word 01",
           "11a14",
           "> bba=Added word 03",
           "18a22",

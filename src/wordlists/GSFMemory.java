@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.Lock;
-import java.text.Collator;
+import java.util.Comparator;
 
 import java.io.RandomAccessFile;
 import java.io.BufferedReader;
@@ -24,6 +24,7 @@ import wordlists.exceptions.*;
 
 import utils.Word;
 import utils.CharacterCollator;
+import utils.StringCollator;
 
 /**
  * Class implementing word list working with GSF and DWA files, which 
@@ -35,8 +36,9 @@ import utils.CharacterCollator;
 public class GSFMemory extends WordList implements 
     IWordListChange, IWordListFileWrite, IWordListFileRead {
 
-  private Node root = new Node();
   private String filename = null;
+  private Comparator<Object> collator = null;
+  private Node root = new Node();
 
   private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
   private final Lock readLock = lock.readLock();
@@ -178,6 +180,15 @@ public class GSFMemory extends WordList implements
       this.address = address;
       }
     
+    }
+
+  /**
+   * Default constructor.
+   */
+  public GSFMemory() {
+    this.collator = StringCollator.getInstance();
+                                        // FIXME: Collator must be WordList
+                                        // dependent, not program dependent.
     }
 
   /**
@@ -440,14 +451,11 @@ public class GSFMemory extends WordList implements
 
     Node node = this.root;
     
-    Collator collator = Collator.getInstance();
-                                        // FIXME: Collator must be WordList
-                                        // dependent, not program dependent.
-    if (collator.compare(word.trim(), "") == 0) {
+    if (this.collator.compare(word.trim(), "") == 0) {
       throw new InvalidIdentifierException(
           "Identifier can not be empty.");
       }
-    if (collator.compare(definition.trim(), "") == 0) {
+    if (this.collator.compare(definition.trim(), "") == 0) {
       throw new InvalidDefinitionException(
           "Definition can not be empty.");
       }
@@ -481,10 +489,7 @@ public class GSFMemory extends WordList implements
     throws InvalidDefinitionException, IdentifierNotExistsException,
            DamagedWordListException {
 
-    Collator collator = Collator.getInstance();
-                                        // FIXME: Collator must be WordList
-                                        // dependent, not program dependent.
-    if (collator.compare(definition.trim(), "") == 0) {
+    if (this.collator.compare(definition.trim(), "") == 0) {
       throw new InvalidDefinitionException(
           "Definition can not be empty.");
       }
