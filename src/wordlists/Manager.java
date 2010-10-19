@@ -17,7 +17,7 @@ public class Manager {
       { "wordlists.DWAMemory", ".dwa" },
       { "wordlists.GSFFile", ".gsf" },
       { "wordlists.GSFMemory", ".dwa" },
-    //{ "wordlists.GSFMemory", ".gsf" },
+      { "wordlists.GSFMemory", ".gsf" },
       });
     }
 
@@ -27,8 +27,7 @@ public class Manager {
   public static Collection getChangeableWordListsWithFileExtensions() {
     return Arrays.asList(new Object[][] {
       { "wordlists.DWAMemory", ".dwa" },
-    //{ "wordlists.GSFMemory", ".gsf" },
-    //{ "wordlists.GSFMemory", ".dwa" },
+      { "wordlists.GSFMemory", ".dwa" },
       });
     }
 
