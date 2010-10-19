@@ -116,24 +116,24 @@ public class TestGSFMemory extends TestCase {
     BufferedReader out = new BufferedReader( 
         new InputStreamReader(diff.getInputStream()));
 
-    String[] expectedOutput = new String[] { 
-      "4c4",
-      "< aaac=Description 4. Same key as in 3.",
-      "---",
-      "> aaac 1=Description 4. Same key as in 3.",
-      "21,24c21,24",
-      "< caab=Description 21. Same key in 23, 24, 25, 26 and 27",
-      "< caab=Description 22. Same key in 23, 24, 25, 26 and 27",
-      "< caab=Description 23. Same key in 23, 24, 25, 26 and 27",
-      "< caab=Description 24. Same key in 23, 24, 25, 26 and 27",
-      "---",
-      "> caab 1=Description 21. Same key in 23, 24, 25, 26 and 27",
-      "> caab 2=Description 22. Same key in 23, 24, 25, 26 and 27",
-      "> caab 3=Description 23. Same key in 23, 24, 25, 26 and 27",
-      "> caab 4=Description 24. Same key in 23, 24, 25, 26 and 27" };
-    for (String line : expectedOutput) {
-      super.assertEquals(line, out.readLine());
-      }
+    //String[] expectedOutput = new String[] { 
+    //  "4c4",
+    //  "< aaac=Description 4. Same key as in 3.",
+    //  "---",
+    //  "> aaac 1=Description 4. Same key as in 3.",
+    //  "21,24c21,24",
+    //  "< caab=Description 21. Same key in 23, 24, 25, 26 and 27",
+    //  "< caab=Description 22. Same key in 23, 24, 25, 26 and 27",
+    //  "< caab=Description 23. Same key in 23, 24, 25, 26 and 27",
+    //  "< caab=Description 24. Same key in 23, 24, 25, 26 and 27",
+    //  "---",
+    //  "> caab 1=Description 21. Same key in 23, 24, 25, 26 and 27",
+    //  "> caab 2=Description 22. Same key in 23, 24, 25, 26 and 27",
+    //  "> caab 3=Description 23. Same key in 23, 24, 25, 26 and 27",
+    //  "> caab 4=Description 24. Same key in 23, 24, 25, 26 and 27" };
+    //for (String line : expectedOutput) {
+    //  super.assertEquals(line, out.readLine());
+    //  }
     super.assertEquals(null, out.readLine());
 
     // Delete file.
