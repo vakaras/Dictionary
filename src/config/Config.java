@@ -113,7 +113,7 @@ public class Config {
       }
     catch (Exception e) {
       System.out.println("Exception: " + e.getMessage());
-      System.out.println("Sistema baigia darbą. ;(");
+      System.out.println("System is now exiting. :/");
       System.exit(0);
       }
     
