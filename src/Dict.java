@@ -23,7 +23,7 @@ class Dict {
     }
   
   private wordlists.WordListFactory w;
-  public wordlists.DWAMemory[] wordList;
+  public wordlists.IWordList[] wordList;
   
   public static void main(String[] services) {
     System.out.println("Program starting.");
@@ -47,7 +47,7 @@ class Dict {
     w = new wordlists.WordListFactory();
 
     config.Config cfg = new config.Config(this);
-    cfg.save();
+    //cfg.save();
     wordList = cfg.load();
 
     services.ServiceFactory s = new services.ServiceFactory(wordList);

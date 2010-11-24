@@ -13,10 +13,10 @@ import wordlists.*;
 public class XGUI extends javax.swing.JFrame implements IService {
 
     private static Object dictObject;
-    public wordlists.DWAMemory[] wordList;
+    public wordlists.IWordList[] wordList;
 
     /** Constructors */
-    public XGUI(wordlists.DWAMemory[] theDict) {
+    public XGUI(wordlists.IWordList[] theDict) {
       //initComponents();
       this.wordList = theDict;
       //this.setVisible(true);
@@ -144,7 +144,6 @@ public class XGUI extends javax.swing.JFrame implements IService {
 
         pack();
         setVisible(true);
-        System.out.println("Bounds: " + this.getBounds());
     }
 
     public void run() {
