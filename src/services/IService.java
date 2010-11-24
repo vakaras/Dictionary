@@ -5,4 +5,7 @@ package services;
 
 public interface IService {
 
+    void run();   // Start Service
+    void stop();  // Stop Service
+
   }

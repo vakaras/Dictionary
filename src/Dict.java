@@ -8,12 +8,23 @@ import services.ServiceFactory;
 import wordlists.WordListFactory;
 import config.Config;
 
+import java.util.LinkedList;
+import utils.Word;
+
 /**
  * The Dict class implements an application, which allows user to get
  * word definitions from various dictionaries.
  */
 class Dict {
 
+  Dict() {
+    System.out.println("Running GUI.");
+    startService();
+    }
+  
+  private wordlists.WordListFactory w;
+  public wordlists.DWAMemory[] wordList;
+  
   public static void main(String[] services) {
     System.out.println("Program starting.");
 
@@ -27,17 +38,36 @@ class Dict {
       test();
       }
     else {
-      wordlists.WordListFactory w = new wordlists.WordListFactory();
-      ServiceFactory s = new ServiceFactory();
+      new Dict();
       }
+    
+    }
+    
+  public void startService() {
+    w = new wordlists.WordListFactory();
 
-    System.out.println("Program closed.");
+    config.Config cfg = new config.Config(this);
+    cfg.save();
+    wordList = cfg.load();
+
+    services.ServiceFactory s = new services.ServiceFactory(wordList);
+    s.newService("XGUI");
     }
 
   public static void test() {
     junit.textui.TestRunner.run(tests.TestDWAMemory.class);
     junit.textui.TestRunner.run(tests.TestGSFMemory.class);
     junit.textui.TestRunner.run(tests.TestGSFFile.class);
+    }
+    
+  private LinkedList<Word> result;
+  public LinkedList<Word> search(String word, int count, int dicts) {
+      try {
+        result = wordList[dicts].search(word, count);
+      } catch (Exception e) {
+      
+        }
+      return result;
     }
 
   }

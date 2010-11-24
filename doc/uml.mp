@@ -65,15 +65,8 @@ beginfig(1);
   Class.D("Dict")
       ()
       ("+main(services: String[]): void",
-      "+addWordList(identifier:String, wordList: Map<String,String>): void",
-      "+removeWordList(identifier: String): void",
-      "+getWordListsIdentifiers(): String[]",
-      "+searchAll(word: String): Map<String, Map<String, String> >",
-      "+searchConcrete(identifier: String, word:String):Map<String,String>",
-      "+searchSmart(word: String): Map<String, String>",
-      "+updateWord(identifier:String,word:String, definition:String):void",
-      "+eraseWord(identifier: String, word: String): String",
-      "+addWord(identifier:String, word:String, definition: String):String"
+      "+startService(): void",
+      "+test(): void",
       );
 
   Interface.IS("IService")

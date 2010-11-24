@@ -4,5 +4,9 @@
 package services;
 
 public class MobileGUI implements IService {
-
+  public void run() {
+    }
+    
+  public void stop() {
+    }
   }
