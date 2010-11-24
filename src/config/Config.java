@@ -110,7 +110,9 @@ public class Config {
         }
       }
     catch (Exception e) {
-      e.printStackTrace();
+      System.out.println("Exception: " + e.getMessage());
+      System.out.println("Sistema baigia darbą. ;(");
+      System.exit(0);
       }
     
     return this.wordList;
