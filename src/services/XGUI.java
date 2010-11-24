@@ -79,6 +79,9 @@ public class XGUI extends javax.swing.JFrame implements IService {
         jWordDef.setColumns(20);
         jWordDef.setRows(5);
         jWordDef.setText("");
+
+        jWordDef.setLineWrap(true);
+        jWordDef.setWrapStyleWord(true);
         jScrollPane1.setViewportView(jWordDef);
 
         jDictBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Test", "Bla" }));
