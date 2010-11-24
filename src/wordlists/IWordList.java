@@ -15,7 +15,8 @@ public interface IWordList {
    * Searches for given word (or its part) in word list and returns the 
    * nearest count or less words with they definitions.
    *
-   * @param word – searched word or its part.
+   * @param word – searched word or its part. Before search word is
+   *  lowercased.
    * @param count – how many results to return.
    * @return list of words and they definitions; list length is less or 
    * equal to count.

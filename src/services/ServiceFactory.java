@@ -9,12 +9,12 @@ public class ServiceFactory {
 
     private static IService startedService;
     private Object dictObject;
-    public wordlists.DWAMemory[] wordList;
+    public wordlists.IWordList[] wordList;
 
     public ServiceFactory(){
       }
     
-    public ServiceFactory(wordlists.DWAMemory[] dicts) {
+    public ServiceFactory(wordlists.IWordList[] dicts) {
       this.wordList = dicts;
       }
     

@@ -20,7 +20,7 @@ public class Config {
 
   private static final String CONFIG_FILE = "config.xml";
   private static int id;
-  private wordlists.DWAMemory[] wordList;
+  private wordlists.IWordList[] wordList;
   
   private Object dictObject;
 
@@ -80,7 +80,7 @@ public class Config {
 
     }
 
-  public wordlists.DWAMemory[] load() {
+  public wordlists.IWordList[] load() {
     try {
  
       File fXmlFile = new File(CONFIG_FILE);
@@ -91,7 +91,7 @@ public class Config {
    
       doc.getDocumentElement().getNodeName();
       NodeList nList = doc.getElementsByTagName("wordlist");
-      wordList = new wordlists.DWAMemory[nList.getLength()];
+      wordList = new wordlists.GSFMemory[nList.getLength()];
 
       for (int temp = 0; temp < nList.getLength(); temp++) {
 
@@ -99,8 +99,10 @@ public class Config {
         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
           Element eElement = (Element) nNode;
 
-          wordList[temp] = new wordlists.DWAMemory();
-          wordList[temp].load(getTagValue("wlfilepath",eElement));
+          wordList[temp] = new wordlists.GSFMemory();
+          // FIXME: Check if IWordListFileRead before executing.
+          ((wordlists.IWordListFileRead) wordList[temp]
+            ).load(getTagValue("wlfilepath",eElement));
           /* FIXME: Object must be created outside the class
            * wordList = new wordlists.DWAMemory();
            * wordList.load(getTagValue("wlfilepath",eElement));

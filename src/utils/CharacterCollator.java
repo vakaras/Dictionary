@@ -24,7 +24,8 @@ public class CharacterCollator implements Comparator<Object> {
     }
   
   public int compare(Character c1, Character c2) {
-    return this.stringCollator.compare(c1.toString(), c2.toString());
+    return this.stringCollator.compare(
+        c1.toString().toLowerCase(), c2.toString().toLowerCase());
     }
 
   public int compare(Object c1, Object c2) {
