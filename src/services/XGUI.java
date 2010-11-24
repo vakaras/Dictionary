@@ -59,6 +59,11 @@ public class XGUI extends javax.swing.JFrame implements IService {
         });
 
         jSearchButton.setText("Search");
+        jSearchButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchInDict();
+            }
+        });
 
         jFileMenu.setText("File");
         jMenuBar1.add(jFileMenu);
@@ -73,7 +78,7 @@ public class XGUI extends javax.swing.JFrame implements IService {
 
         jWordDef.setColumns(20);
         jWordDef.setRows(5);
-        jWordDef.setText("bn\n");
+        jWordDef.setText("");
         jScrollPane1.setViewportView(jWordDef);
 
         jDictBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Test", "Bla" }));
@@ -85,21 +90,8 @@ public class XGUI extends javax.swing.JFrame implements IService {
         
         jSearchField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-              try {
-                
-                matchFound = wordList[0].search(jSearchField.getText(), 4);
-                
-                String definitions = "";
-                for(int temp = 0; temp < matchFound.size(); temp++) {
-                  definitions += matchFound.get(temp).getWord() + " - "
-                              + matchFound.get(temp).getDescription() + "\n";
-                  }
-                jWordDef.setText(definitions);
-              } catch (Exception e) {
-                  // TODO: Write an exceptions handler
-                };
-
-            }
+              searchInDict();
+              }
         });
 
         jSearchField.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -154,6 +146,21 @@ public class XGUI extends javax.swing.JFrame implements IService {
       System.out.println("System is now exiting. Bye :)");
       System.exit(0);
       }
+    
+    private void searchInDict() {
+      try {
+        matchFound = wordList[0].search(jSearchField.getText(), 4);
+        
+        String definitions = "";
+        for(int temp = 0; temp < matchFound.size(); temp++) {
+          definitions += matchFound.get(temp).getWord() + " - "
+                      + matchFound.get(temp).getDescription() + "\n";
+          }
+        jWordDef.setText(definitions);
+      } catch (Exception e) {
+        // TODO: Write an exceptions handler
+        };
+      };
 
     // Variables declaration
     private LinkedList<Word> matchFound;
