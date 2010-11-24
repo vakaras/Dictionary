@@ -47,7 +47,7 @@ class Dict {
     w = new wordlists.WordListFactory();
 
     config.Config cfg = new config.Config(this);
-    cfg.save();
+    //cfg.save();
     wordList = cfg.load();
 
     services.ServiceFactory s = new services.ServiceFactory(wordList);
