@@ -172,7 +172,7 @@ public class XGUI extends javax.swing.JFrame implements IService {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JButton jSearchButton;
     private javax.swing.JTextField jSearchField;
-    private javax.swing.JLabel jPrintedText;
+    //private javax.swing.JLabel jPrintedText;
     private javax.swing.JMenuItem jExitMenuItem;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jWordDef;
