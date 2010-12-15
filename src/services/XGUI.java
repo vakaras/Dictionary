@@ -33,7 +33,6 @@ public class XGUI extends javax.swing.JFrame implements IService {
     // Variables declaration
     private LinkedList<Word> matchFound;
     private javax.swing.JMenu jFileMenu;
-    private javax.swing.JMenu jHelpMenu;
     private javax.swing.JMenu jDictMenu;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JButton jSearchButton;
@@ -61,7 +60,6 @@ public class XGUI extends javax.swing.JFrame implements IService {
         jDictBox = new javax.swing.JComboBox();
         jMenuBar1 = new javax.swing.JMenuBar();
         jFileMenu = new javax.swing.JMenu();
-        jHelpMenu = new javax.swing.JMenu();
         jExitMenuItem = new javax.swing.JMenuItem();
         jDictMenu = new javax.swing.JMenu();
         jAddWordItem = new javax.swing.JMenuItem();

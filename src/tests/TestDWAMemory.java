@@ -1,12 +1,9 @@
 package tests;
 
-import java.util.LinkedList;
-import java.util.ListIterator;
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.File;
-
-import junit.framework.*;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
 
 import utils.Word;
 

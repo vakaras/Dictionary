@@ -191,8 +191,8 @@ public class Config {
         }
       }
     catch (Exception e) {
-//      System.out.println("Exception: " + );
-      e.printStackTrace();
+      System.out.println("Error: " + e.getMessage());
+//      e.printStackTrace();
       System.out.println("System is now exiting. :/");
       System.exit(0);
       }
@@ -222,8 +222,14 @@ public class Config {
 	}
 	
 	public void loadNewDict(File file, String name) {
+		int id;
+		if (wordList.size() == 0) {
+			id = 0;
+		} else {
+			id = wordList.getLast().getId()+1;
+		}
 		wordList.add(new utils.LoadedWordList(
-      		  (wordList.getLast().getId())+1, 
+      		  id, 
       		  new wordlists.GSFMemory(), 
       		  name,
       		  file.getAbsolutePath()

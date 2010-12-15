@@ -1,23 +1,16 @@
 package tests;
 
-import java.util.LinkedList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.io.File;
+import java.util.Collection;
+import java.util.LinkedList;
 
-import org.junit.Test;
-import org.junit.BeforeClass;
-import org.junit.AfterClass;
-import org.junit.runners.Parameterized.Parameters;
-import org.junit.runners.Parameterized;
-import org.junit.runner.RunWith;
-import org.junit.Assert;
-
+import tests.runnable.RunnableSearch;
 import utils.Word;
-import wordlists.*;
-import wordlists.exceptions.*;
-import tests.TestUtils;
-import tests.runnable.*;
+import wordlists.GSFMemory;
+import wordlists.IWordListFileRead;
+import wordlists.Manager;
+import wordlists.WordList;
+import wordlists.exceptions.InvalidCountException;
 
 /**
  * Tester class for classes which extends WordList class.

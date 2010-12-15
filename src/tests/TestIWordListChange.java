@@ -1,22 +1,20 @@
 package tests;
 
-import java.util.LinkedList;
 import java.util.Collection;
+import java.util.LinkedList;
 
-import org.junit.Test;
-import org.junit.Before;
-import org.junit.AfterClass;
-import org.junit.runners.Parameterized.Parameters;
-import org.junit.runners.Parameterized;
-import org.junit.runner.RunWith;
-import org.junit.Assert;
-
-import wordlists.*;
-import wordlists.exceptions.*;
+import tests.runnable.RunnableAdd;
+import tests.runnable.RunnableSearch;
 import utils.Word;
-
-import tests.TestUtils;
-import tests.runnable.*;
+import wordlists.IWordList;
+import wordlists.IWordListChange;
+import wordlists.IWordListFileRead;
+import wordlists.IWordListFileWrite;
+import wordlists.Manager;
+import wordlists.exceptions.DuplicateIdentifierException;
+import wordlists.exceptions.IdentifierNotExistsException;
+import wordlists.exceptions.InvalidDefinitionException;
+import wordlists.exceptions.InvalidIdentifierException;
 
 /**
  * Tester class for classes which implements IWordListChange interface.
