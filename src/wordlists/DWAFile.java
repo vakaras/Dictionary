@@ -109,5 +109,13 @@ public class DWAFile extends WordList implements IWordListFileRead {
   public void load(String filename) {
     this.filename = filename;
     }
+
+@Override
+public void addWord(String word, String definition)
+		throws InvalidIdentifierException, InvalidDefinitionException,
+		DuplicateIdentifierException {
+	// TODO Auto-generated method stub
+	
+}
   
   }

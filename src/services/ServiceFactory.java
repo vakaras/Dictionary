@@ -1,22 +1,32 @@
 /**
- * The ServicesFactory implemnts factory, which produces instances, which
- * implements IService inteface.
+ * The ServicesFactory implements factory, which produces instances, which
+ * implements IService interface.
  */
 package services;
-import wordlists.*;
+import java.util.LinkedList;
 
+import wordlists.*;
+import dict.Dict;
+
+@SuppressWarnings("unused")
 public class ServiceFactory {
 
     private static IService startedService;
-    private Object dictObject;
-    public wordlists.IWordList[] wordList;
+    //private Object dictObject;
+    private LinkedList<utils.LoadedWordList> wordList;
+    private Dict theDict = null;
 
     public ServiceFactory(){
       }
     
-    public ServiceFactory(wordlists.IWordList[] dicts) {
+    ServiceFactory(LinkedList<utils.LoadedWordList> dicts) {
       this.wordList = dicts;
       }
+    
+    public ServiceFactory(LinkedList<utils.LoadedWordList> dicts, Dict theDict) {
+        this.wordList = dicts;
+        this.theDict = theDict;
+        }
     
     public void newService (String service) {
 
@@ -27,7 +37,7 @@ public class ServiceFactory {
         startedService = new MobileGUI();
         }
       else {
-        startedService = new XGUI(wordList);
+        startedService = new XGUI(wordList, theDict);
         }
       
       startedService.run();

@@ -3,6 +3,9 @@ package wordlists;
 import java.util.LinkedList;
 
 import utils.Word;
+import wordlists.exceptions.DuplicateIdentifierException;
+import wordlists.exceptions.InvalidDefinitionException;
+import wordlists.exceptions.InvalidIdentifierException;
 
 /**
  * Interface defining the most generic word list.
@@ -22,6 +25,8 @@ public interface IWordList {
    * equal to count.
    */
   LinkedList<Word> search(String word, int count) throws Exception;
+  void addWord(String word, String definition) throws InvalidIdentifierException, 
+  	InvalidDefinitionException, DuplicateIdentifierException;
 
   }
 

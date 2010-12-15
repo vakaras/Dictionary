@@ -255,4 +255,12 @@ public class GSFFile extends WordList implements IWordListFileRead {
     return;
     }
 
+@Override
+public void addWord(String word, String definition)
+		throws InvalidIdentifierException, InvalidDefinitionException,
+		DuplicateIdentifierException {
+	// TODO Auto-generated method stub
+	
+}
+
   }

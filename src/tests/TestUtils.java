@@ -5,7 +5,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.File;
 
-import org.junit.Assert;
+import junit.framework.Assert;
 
 import utils.Word;
 
@@ -14,13 +14,13 @@ public class TestUtils {
   public static void assertEquals(
       LinkedList<Word> expected, LinkedList<Word> actual) {
 
-    Assert.assertEquals(expected.size(), actual.size());
+    junit.framework.Assert.assertEquals(expected.size(), actual.size());
 
     for (int i = 0; i < expected.size(); i++) {
       Word expectedWord = expected.get(i);
       Word actualWord = actual.get(i);
-      Assert.assertEquals(expectedWord.getWord(), actualWord.getWord());
-      Assert.assertEquals(expectedWord.getDescription(), 
+      junit.framework.Assert.assertEquals(expectedWord.getWord(), actualWord.getWord());
+      junit.framework.Assert.assertEquals(expectedWord.getDescription(), 
           actualWord.getDescription());
       }
     
@@ -29,13 +29,13 @@ public class TestUtils {
   public static void assertEquals(
       Word[] expected, LinkedList<Word> actual) {
 
-    Assert.assertEquals(expected.length, actual.size());
+    junit.framework.Assert.assertEquals(expected.length, actual.size());
 
     for (int i = 0; i < expected.length; i++) {
       Word expectedWord = expected[i];
       Word actualWord = actual.get(i);
-      Assert.assertEquals(expectedWord.getWord(), actualWord.getWord());
-      Assert.assertEquals(
+      junit.framework.Assert.assertEquals(expectedWord.getWord(), actualWord.getWord());
+      junit.framework.Assert.assertEquals(
           expectedWord.getDescription(), 
           actualWord.getDescription());
       }
@@ -55,10 +55,10 @@ public class TestUtils {
           new InputStreamReader(diff.getInputStream()));
 
       for (String line : expectedDiffOutput) {
-        Assert.assertEquals(line, out.readLine());
+        junit.framework.Assert.assertEquals(line, out.readLine());
         }
       
-      Assert.assertEquals(null, out.readLine());
+      junit.framework.Assert.assertEquals(null, out.readLine());
       }
     finally {
       if (out != null) {
@@ -70,7 +70,7 @@ public class TestUtils {
   
   public static void deleteFile(String fileName) throws Exception {
     File f = new File(fileName);
-    Assert.assertTrue(f.delete());
+    junit.framework.Assert.assertTrue(f.delete());
     }
 
   }

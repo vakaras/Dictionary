@@ -48,3 +48,10 @@ Reikalavimai
 
 .. code-block:: sh
   sudo apt-get install junit4 junit4-doc
+
+TODO
+====
+
+Sutvarkyti config;
+Perkelti Dict i paketa;
+zodyno valdymas per GUI;

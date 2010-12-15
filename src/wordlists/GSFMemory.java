@@ -5,7 +5,6 @@ import java.lang.Integer;
 
 import java.util.TreeMap;
 import java.util.Set;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.Lock;
@@ -337,6 +336,7 @@ public class GSFMemory extends WordList implements
         this.saveGSF(filename);
         }
       else {
+    	  System.out.println(filename);
         throw new IOException("Not supported file type.");
         }
       }

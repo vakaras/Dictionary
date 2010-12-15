@@ -14,15 +14,18 @@ testold: Dict.class
 	java -cp .:/usr/share/java/junit.jar Dict test
 
 run: Dict.class
-	java Dict
+	java Dictionary
 
 Dict.class:
 	javac -g -Xlint \
-		Dict.java \
+		Dictionary.java \
 		wordlists/*.java \
 		wordlists/exceptions/*.java \
 		utils/*.java \
 		tests/*.java \
+		dict/*.java \
+		config/*.java \
+		services/*.java \
 		tests/runnable/*.java
 
 clean:
